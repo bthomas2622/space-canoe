@@ -16,6 +16,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
@@ -63,6 +65,8 @@ public class GameScreen implements Screen {
         // creating canoe sprite
         canoe = new Sprite(canoeImage);
         canoe.setPosition(Gdx.graphics.getWidth()/2 - canoe.getWidth() / 2, Gdx.graphics.getHeight() / 2 - canoe.getHeight() / 2);
+        canoe.setOriginCenter();
+        canoe.setRotation(0f);
 
         //phyiscs world and bodytypes
         world = new World(new Vector2(0, 0f), true);
@@ -76,6 +80,11 @@ public class GameScreen implements Screen {
         //define dimensions of the canoe physics shape
         PolygonShape canoeShape = new PolygonShape();
         canoeShape.setAsBox(canoe.getWidth()/2, canoe.getHeight()/2);
+        //FixtureDef defines shape of body and properties like density
+        FixtureDef canoeFixtureDef = new FixtureDef();
+        canoeFixtureDef.shape = canoeShape;
+        canoeFixtureDef.density = 0.1f;
+        Fixture canoeFixture = canoeBody.createFixture(canoeFixtureDef);
 
         // create the space debris array and spawn the first piece of debris
         spaceDebris = new Array<Sprite>();
@@ -92,6 +101,17 @@ public class GameScreen implements Screen {
         lastDebrisTime = TimeUtils.nanoTime();
     }
 
+    public float getCanoeAngle(){
+        float currentDegrees = (canoeBody.getAngle());
+        return currentDegrees;
+    };
+
+    public void setCanoeAngle(float degrees){
+        //canoe.setRotation((float)Math.toRadians(degrees));
+        canoe.setRotation(degrees);
+        canoeBody.setTransform(canoeBody.getPosition(), degrees);
+    };
+
     @Override
     public void render(float delta) {
         // arguments to glClearColor are the red, green
@@ -104,11 +124,23 @@ public class GameScreen implements Screen {
         camera.update();
         //step physics forward at rate of 60hx
         world.step(1f/60f, 6, 2);
-        canoe.setPosition(canoeBody.getPosition().x, canoeBody.getPosition().y);
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
-            canoe.setRotation((float)Math.toDegrees(30));
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
-            canoe.setRotation((float)Math.toDegrees(60));
+        //canoe.setPosition(canoeBody.getPosition().x, canoeBody.getPosition().y);
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) {
+            //canoe.setRotation((float)Math.toDegrees(30));
+            if (getCanoeAngle() >= 330f)
+                setCanoeAngle(0f);
+            else
+                setCanoeAngle((getCanoeAngle() + 30f));
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) {
+            if (getCanoeAngle() <= 0f)
+                setCanoeAngle(330f);
+            else
+                setCanoeAngle((getCanoeAngle() - 30f));
+            //canoe.setRotation((float) getCanoeAngle(canoe) - 30f);
+        }
+        System.out.println(getCanoeAngle());
         // tell the SpriteBatch to render in the
         // coordinate system specified by the camera.
         game.batch.setProjectionMatrix(camera.combined);
@@ -126,8 +158,8 @@ public class GameScreen implements Screen {
         game.batch.end();
 
         // check if we need to create a new raindrop
-        if (TimeUtils.nanoTime() - lastDebrisTime > 1000000000)
-            spawnDebris();
+//        if (TimeUtils.nanoTime() - lastDebrisTime > 1000000000)
+//            spawnDebris();
 
         // move the debris, remove any that are beyond edge of
         // the screen or that hit the canoe. iterate counter and add sound effect
