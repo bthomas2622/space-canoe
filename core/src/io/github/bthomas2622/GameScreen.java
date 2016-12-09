@@ -22,6 +22,8 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
+
+import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
@@ -38,6 +40,7 @@ public class GameScreen implements Screen {
     OrthographicCamera camera;
     Sprite canoe;
     Array<Sprite> spaceDebris;
+    ArrayList spaceDebrisList = new ArrayList();
     long lastDebrisTime;
     int debrisDodged;
     World world;
@@ -96,8 +99,38 @@ public class GameScreen implements Screen {
     //sets location for new space debris
     private void spawnDebris() {
         Sprite debris = new Sprite(spaceDebrisImage);
-        debris.setPosition(Gdx.graphics.getWidth() - debris.getWidth() / 2, Gdx.graphics.getHeight() / 2 - debris.getHeight() / 2);
+        if (getCanoeAngle() <= 45f || getCanoeAngle() >= 315f){
+            debris.setPosition(Gdx.graphics.getWidth() + debris.getWidth() / 2, MathUtils.random()*Gdx.graphics.getHeight());
+        } else if (getCanoeAngle() > 45f && getCanoeAngle() <= 135f){
+            debris.setPosition(Gdx.graphics.getWidth()*MathUtils.random(), Gdx.graphics.getHeight() + debris.getHeight());
+        } else if (getCanoeAngle() > 135f && getCanoeAngle() <= 225f){
+            debris.setPosition(0 - debris.getWidth()/2, Gdx.graphics.getHeight()*MathUtils.random());
+        } else {
+            debris.setPosition(Gdx.graphics.getWidth()*MathUtils.random(), 0 - debris.getHeight() / 2);
+        }
+
         spaceDebris.add(debris);
+
+        BodyDef debrisBodyDef = new BodyDef();
+        debrisBodyDef.type = BodyDef.BodyType.DynamicBody;
+        debrisBodyDef.position.set(debris.getX(),debris.getY());
+        //create body in world using our definition
+        debrisBody = world.createBody(debrisBodyDef);
+        //define dimensions of the canoe physics shape
+        PolygonShape debrisShape = new PolygonShape();
+        debrisShape.setAsBox(canoe.getWidth()/2, canoe.getHeight()/2);
+        //FixtureDef defines shape of body and properties like density
+        FixtureDef canoeFixtureDef = new FixtureDef();
+        canoeFixtureDef.shape = debrisShape;
+        canoeFixtureDef.density = 0.1f;
+        Fixture canoeFixture = canoeBody.createFixture(canoeFixtureDef);
+
+        // create the space debris array and spawn the first piece of debris
+        spaceDebris = new Array<Sprite>();
+        spawnDebris();
+
+        debrisShape.dispose();
+
         lastDebrisTime = TimeUtils.nanoTime();
     }
 
