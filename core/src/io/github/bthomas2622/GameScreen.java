@@ -125,19 +125,6 @@ public class GameScreen implements Screen {
         }
         game.batch.end();
 
-//        for (Sprite debris : spaceDebris) {
-//            if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
-//                debris.y -= 200 * Gdx.graphics.getDeltaTime();
-//            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
-//                debris.y += 200 * Gdx.graphics.getDeltaTime();
-//        }
-
-//        // make sure the bucket stays within the screen bounds
-//        if (bucket.x < 0)
-//            bucket.x = 0;
-//        if (bucket.x > 800 - 64)
-//            bucket.x = 800 - 64;
-
         // check if we need to create a new raindrop
         if (TimeUtils.nanoTime() - lastDebrisTime > 1000000000)
             spawnDebris();
