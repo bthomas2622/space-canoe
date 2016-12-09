@@ -46,6 +46,7 @@ public class GameScreen implements Screen {
     World world;
     Body canoeBody;
     Body debrisBody;
+    Array<Body> bodies;
     float torque = 0.0f;
 
     public GameScreen(final SpaceCanoe gam) {
@@ -91,6 +92,7 @@ public class GameScreen implements Screen {
 
         // create the space debris array and spawn the first piece of debris
         spaceDebris = new Array<Sprite>();
+        bodies = new Array<Body>();
         spawnDebris();
 
         canoeShape.dispose();
@@ -109,8 +111,6 @@ public class GameScreen implements Screen {
             debris.setPosition(Gdx.graphics.getWidth()*MathUtils.random(), 0 - debris.getHeight() / 2);
         }
 
-        spaceDebris.add(debris);
-
         BodyDef debrisBodyDef = new BodyDef();
         debrisBodyDef.type = BodyDef.BodyType.DynamicBody;
         debrisBodyDef.position.set(debris.getX(),debris.getY());
@@ -125,9 +125,19 @@ public class GameScreen implements Screen {
         canoeFixtureDef.density = 0.1f;
         Fixture canoeFixture = canoeBody.createFixture(canoeFixtureDef);
 
-        // create the space debris array and spawn the first piece of debris
-        spaceDebris = new Array<Sprite>();
-        spawnDebris();
+        if (getCanoeAngle() <= 45f || getCanoeAngle() >= 315f){
+            debrisBody.applyForceToCenter(-1f,0f, true);
+        } else if (getCanoeAngle() > 45f && getCanoeAngle() <= 135f){
+            debrisBody.applyForceToCenter(0f,-1f, true);
+        } else if (getCanoeAngle() > 135f && getCanoeAngle() <= 225f){
+            debrisBody.applyForceToCenter(1f,0f, true);
+        } else {
+            debrisBody.applyForceToCenter(0f,1f, true);
+        }
+
+        debrisBody.setUserData(debris);
+        spaceDebris.add(debris);
+        bodies.add(debrisBody);
 
         debrisShape.dispose();
 
@@ -178,10 +188,16 @@ public class GameScreen implements Screen {
         // coordinate system specified by the camera.
         game.batch.setProjectionMatrix(camera.combined);
 
-
+        //update debris locations
+        int i = 0;
+        for (Sprite debris : spaceDebris) {
+            bodies.get(i).applyForceToCenter(-5f, 0, true);
+            debris.setPosition(bodies.get(i).getPosition().x, bodies.get(i).getPosition().y);
+            i++;
+        }
 
         // begin a new batch and draw the canoe and
-        // all drops
+        // all debris
         game.batch.begin();
         game.font.draw(game.batch, "Debris Dodged: " + debrisDodged, 0, 480);
         game.batch.draw(canoe, canoe.getX(), canoe.getY(), canoe.getOriginX(), canoe.getOriginY(), canoe.getWidth(), canoe.getHeight(), canoe.getScaleX(), canoe.getScaleY(), canoe.getRotation());
@@ -190,9 +206,9 @@ public class GameScreen implements Screen {
         }
         game.batch.end();
 
-        // check if we need to create a new raindrop
-//        if (TimeUtils.nanoTime() - lastDebrisTime > 1000000000)
-//            spawnDebris();
+        //check if we need to create a new raindrop
+        if (TimeUtils.nanoTime() - lastDebrisTime > 1000000000)
+            spawnDebris();
 
         // move the debris, remove any that are beyond edge of
         // the screen or that hit the canoe. iterate counter and add sound effect
