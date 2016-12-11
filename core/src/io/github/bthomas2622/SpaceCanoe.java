@@ -17,7 +17,6 @@ public class SpaceCanoe extends Game {
 		batch = new SpriteBatch();
 		font = new BitmapFont(); //temp till create new FreeTypeFontGenerator
 		this.setScreen(new MainMenuScreen(this));
-		this.setScreen(new GameOverScreen(this));
 	}
 
 	@Override

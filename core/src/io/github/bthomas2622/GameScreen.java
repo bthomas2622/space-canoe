@@ -52,6 +52,7 @@ public class GameScreen implements Screen {
     Body debrisBody;
     Array<Body> bodies;
     float torque = 0.0f;
+    Boolean gameOver = false;
 
     public GameScreen(final SpaceCanoe gam) {
         game = gam;
@@ -103,8 +104,7 @@ public class GameScreen implements Screen {
             public void beginContact(Contact contact) {
                 if((contact.getFixtureA().getBody().getUserData() == "debris" && contact.getFixtureB().getBody().getUserData() == "canoe") || (contact.getFixtureA().getBody().getUserData() == "canoe" && contact.getFixtureB().getBody().getUserData() == "debris")){
                     System.out.println("COLLISION");
-                    game.setScreen(new GameOverScreen(game));
-                    dispose();
+                    gameOver = true;
                 }
             }
             @Override
@@ -246,22 +246,10 @@ public class GameScreen implements Screen {
         if (TimeUtils.nanoTime() - lastDebrisTime > 1000000000)
             spawnDebris();
 
-        // move the debris, remove any that are beyond edge of
-        // the screen or that hit the canoe. iterate counter and add sound effect
-//        Iterator<Sprite> iter = spaceDebris.iterator();
-//        while (iter.hasNext()) {
-//            Sprite debris = iter.next();
-//            debris.x -= 200*Gdx.graphics.getDeltaTime();
-//            if (debris.x < 0){
-//                iter.remove();
-//                debrisDodged++;
-//            }
-//            if (debris.overlaps(canoe)) {
-//                //launch game over screen
-//                //collisionSound.play();
-//                iter.remove();
-//            }
-//        }
+        if (gameOver){
+            game.setScreen(new GameOverScreen(game));
+            dispose();
+        }
     }
 
     @Override
