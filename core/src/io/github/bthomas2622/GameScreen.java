@@ -157,16 +157,6 @@ public class GameScreen implements Screen {
         debrisBody.createFixture(debrisFixtureDef);
         //Fixture debrisFixture = canoeBody.createFixture(debrisFixtureDef);
 
-//        if (getCanoeAngle() <= 45f || getCanoeAngle() >= 315f){
-//            debrisBody.applyForceToCenter(-1f,0f, true);
-//        } else if (getCanoeAngle() > 45f && getCanoeAngle() <= 135f){
-//            debrisBody.applyForceToCenter(0f,-1f, true);
-//        } else if (getCanoeAngle() > 135f && getCanoeAngle() <= 225f){
-//            debrisBody.applyForceToCenter(1f,0f, true);
-//        } else {
-//            debrisBody.applyForceToCenter(0f,1f, true);
-//        }
-
         debrisBody.setUserData("debris");
         spaceDebris.add(debris);
         bodies.add(debrisBody);
@@ -223,8 +213,21 @@ public class GameScreen implements Screen {
         //update debris locations
         int i = 0;
         for (Sprite debris : spaceDebris) {
-            bodies.get(i).applyForceToCenter(-150f, 0, true);
-            debris.setPosition(bodies.get(i).getPosition().x, bodies.get(i).getPosition().y);
+            if (getCanoeAngle() <= 45f || getCanoeAngle() >= 315f){
+                bodies.get(i).applyForceToCenter(-150f, 0, true);
+                debris.setPosition(bodies.get(i).getPosition().x, bodies.get(i).getPosition().y);
+            } else if (getCanoeAngle() > 45f && getCanoeAngle() <= 135f){
+                bodies.get(i).applyForceToCenter(0, -150f, true);
+                debris.setPosition(bodies.get(i).getPosition().x, bodies.get(i).getPosition().y);
+            } else if (getCanoeAngle() > 135f && getCanoeAngle() <= 225f){
+                bodies.get(i).applyForceToCenter(150f, 0, true);
+                debris.setPosition(bodies.get(i).getPosition().x, bodies.get(i).getPosition().y);
+            } else {
+                bodies.get(i).applyForceToCenter(0, 150f, true);
+                debris.setPosition(bodies.get(i).getPosition().x, bodies.get(i).getPosition().y);
+            }
+            //bodies.get(i).applyForceToCenter(-150f, 0, true);
+            //debris.setPosition(bodies.get(i).getPosition().x, bodies.get(i).getPosition().y);
             if (debris.getX() < 200){
                 spaceDebris.removeIndex(i);
                 bodies.removeIndex(i);
