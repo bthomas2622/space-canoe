@@ -16,8 +16,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
@@ -50,7 +54,7 @@ public class GameScreen implements Screen {
     float torque = 0.0f;
 
     public GameScreen(final SpaceCanoe gam) {
-        this.game = gam;
+        game = gam;
 
         // load the images for the canoe and the space debris
         canoeImage = new Texture(Gdx.files.internal("holderRectangle.PNG"));
@@ -76,7 +80,7 @@ public class GameScreen implements Screen {
         world = new World(new Vector2(0, 0f), true);
         BodyDef canoeBodyDef = new BodyDef();
         BodyDef debrisBodyDef = new BodyDef();
-        canoeBodyDef.type = BodyDef.BodyType.KinematicBody;
+        canoeBodyDef.type = BodyDef.BodyType.DynamicBody;
         debrisBodyDef.type = BodyDef.BodyType.DynamicBody;
         canoeBodyDef.position.set(canoe.getX(),canoe.getY());
         //create body in world using our definition
@@ -87,8 +91,33 @@ public class GameScreen implements Screen {
         //FixtureDef defines shape of body and properties like density
         FixtureDef canoeFixtureDef = new FixtureDef();
         canoeFixtureDef.shape = canoeShape;
-        canoeFixtureDef.density = 0.1f;
-        Fixture canoeFixture = canoeBody.createFixture(canoeFixtureDef);
+        canoeFixtureDef.density = 1f;
+        canoeFixtureDef.restitution = 1f;
+        //Fixture canoeFixture = canoeBody.createFixture(canoeFixtureDef);
+        canoeBody.setUserData("canoe");
+        canoeBody.createFixture(canoeFixtureDef);
+
+        //create contact listener for when debris collides with canoe
+        world.setContactListener(new ContactListener() {
+            @Override
+            public void beginContact(Contact contact) {
+                if((contact.getFixtureA().getBody().getUserData() == "debris" && contact.getFixtureB().getBody().getUserData() == "canoe") || (contact.getFixtureA().getBody().getUserData() == "canoe" && contact.getFixtureB().getBody().getUserData() == "debris")){
+                    System.out.println("COLLISION");
+                    game.setScreen(new GameOverScreen(game));
+                    dispose();
+                }
+            }
+            @Override
+            public void endContact(Contact contact) {
+            }
+            @Override
+            public void preSolve(Contact contact, Manifold oldManifold) {
+            }
+            @Override
+            public void postSolve(Contact contact, ContactImpulse impulse) {
+
+            }
+        });
 
         // create the space debris array and spawn the first piece of debris
         spaceDebris = new Array<Sprite>();
@@ -111,6 +140,7 @@ public class GameScreen implements Screen {
             debris.setPosition(Gdx.graphics.getWidth()*MathUtils.random(), 0 - debris.getHeight() / 2);
         }
 
+        debris.setOriginCenter();
         BodyDef debrisBodyDef = new BodyDef();
         debrisBodyDef.type = BodyDef.BodyType.DynamicBody;
         debrisBodyDef.position.set(debris.getX(),debris.getY());
@@ -118,24 +148,26 @@ public class GameScreen implements Screen {
         debrisBody = world.createBody(debrisBodyDef);
         //define dimensions of the canoe physics shape
         PolygonShape debrisShape = new PolygonShape();
-        debrisShape.setAsBox(canoe.getWidth()/2, canoe.getHeight()/2);
+        debrisShape.setAsBox(debris.getWidth()/2, debris.getHeight()/2);
         //FixtureDef defines shape of body and properties like density
-        FixtureDef canoeFixtureDef = new FixtureDef();
-        canoeFixtureDef.shape = debrisShape;
-        canoeFixtureDef.density = 0.1f;
-        Fixture canoeFixture = canoeBody.createFixture(canoeFixtureDef);
+        FixtureDef debrisFixtureDef = new FixtureDef();
+        debrisFixtureDef.shape = debrisShape;
+        debrisFixtureDef.density = 0.0f;
+        debrisFixtureDef.restitution = 0.5f;
+        debrisBody.createFixture(debrisFixtureDef);
+        //Fixture debrisFixture = canoeBody.createFixture(debrisFixtureDef);
 
-        if (getCanoeAngle() <= 45f || getCanoeAngle() >= 315f){
-            debrisBody.applyForceToCenter(-1f,0f, true);
-        } else if (getCanoeAngle() > 45f && getCanoeAngle() <= 135f){
-            debrisBody.applyForceToCenter(0f,-1f, true);
-        } else if (getCanoeAngle() > 135f && getCanoeAngle() <= 225f){
-            debrisBody.applyForceToCenter(1f,0f, true);
-        } else {
-            debrisBody.applyForceToCenter(0f,1f, true);
-        }
+//        if (getCanoeAngle() <= 45f || getCanoeAngle() >= 315f){
+//            debrisBody.applyForceToCenter(-1f,0f, true);
+//        } else if (getCanoeAngle() > 45f && getCanoeAngle() <= 135f){
+//            debrisBody.applyForceToCenter(0f,-1f, true);
+//        } else if (getCanoeAngle() > 135f && getCanoeAngle() <= 225f){
+//            debrisBody.applyForceToCenter(1f,0f, true);
+//        } else {
+//            debrisBody.applyForceToCenter(0f,1f, true);
+//        }
 
-        debrisBody.setUserData(debris);
+        debrisBody.setUserData("debris");
         spaceDebris.add(debris);
         bodies.add(debrisBody);
 
@@ -191,8 +223,12 @@ public class GameScreen implements Screen {
         //update debris locations
         int i = 0;
         for (Sprite debris : spaceDebris) {
-            bodies.get(i).applyForceToCenter(-5f, 0, true);
+            bodies.get(i).applyForceToCenter(-150f, 0, true);
             debris.setPosition(bodies.get(i).getPosition().x, bodies.get(i).getPosition().y);
+            if (debris.getX() < 200){
+                spaceDebris.removeIndex(i);
+                bodies.removeIndex(i);
+            }
             i++;
         }
 
