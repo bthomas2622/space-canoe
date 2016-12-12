@@ -238,31 +238,7 @@ public class GameScreen implements Screen {
                 //debris.setPosition(bodies.get(i).getPosition().x + debris.getWidth(), bodies.get(i).getPosition().y);
                 debris.setPosition(bodies.get(i).getPosition().x - debris.getWidth()/2,  bodies.get(i).getPosition().y - debris.getHeight()/2);
                 debris.setRotation((float) Math.toDegrees((double) bodies.get(i).getAngle()));
-                System.out.println((float) Math.toDegrees((double) bodies.get(i).getAngle()));
-                //debris.setPosition(bodies.get(i).getLocalCenter().x, bodies.get(i).getLocalCenter().y);
-//                if (getCanoeAngle() <= 45f || getCanoeAngle() >= 315f){
-//                    bodies.get(i).applyLinearImpulse(-impulseForce, 0, bodies.get(i).getPosition().x, bodies.get(i).getPosition().y, true);
-//                    //bodies.get(i).applyForceToCenter(-150f, 0, true);
-//                    debris.setPosition(bodies.get(i).getPosition().x, bodies.get(i).getPosition().y);
-//                } else if (getCanoeAngle() > 45f && getCanoeAngle() <= 135f){
-//                    bodies.get(i).applyLinearImpulse(0, -impulseForce, bodies.get(i).getPosition().x, bodies.get(i).getPosition().y, true);
-//                    //bodies.get(i).applyForceToCenter(-150f, 0, true);
-//                    debris.setPosition(bodies.get(i).getPosition().x, bodies.get(i).getPosition().y);
-//                } else if (getCanoeAngle() > 135f && getCanoeAngle() <= 225f){
-//                    bodies.get(i).applyLinearImpulse(impulseForce, 0, bodies.get(i).getPosition().x, bodies.get(i).getPosition().y, true);
-//                    //bodies.get(i).applyForceToCenter(-150f, 0, true);
-//                    debris.setPosition(bodies.get(i).getPosition().x, bodies.get(i).getPosition().y);
-//                } else {
-//                    bodies.get(i).applyLinearImpulse(0, impulseForce, bodies.get(i).getPosition().x, bodies.get(i).getPosition().y, true);
-//                    //bodies.get(i).applyForceToCenter(-150f, 0, true);
-//                    debris.setPosition(bodies.get(i).getPosition().x, bodies.get(i).getPosition().y);
-//                }
-//                //bodies.get(i).applyForceToCenter(-150f, 0, true);
-//                //debris.setPosition(bodies.get(i).getPosition().x, bodies.get(i).getPosition().y);
-//                if (debris.getX() < -300 || debris.getX() > 1500 || debris.getY() < -300 || debris.getY() > 1200){
-//                    spaceDebris.removeIndex(i);
-//                    bodies.removeIndex(i);
-//                }
+                //System.out.println((float) Math.toDegrees((double) bodies.get(i).getAngle()));
                 i++;
             }
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) {
@@ -277,30 +253,6 @@ public class GameScreen implements Screen {
                 //debris.setPosition(bodies.get(i).getPosition().x + debris.getWidth(), bodies.get(i).getPosition().y);
                 debris.setPosition(bodies.get(i).getPosition().x - debris.getWidth()/2,  bodies.get(i).getPosition().y - debris.getHeight()/2);
                 debris.setRotation((float) Math.toDegrees(bodies.get(i).getAngle()));
-                //debris.setPosition(bodies.get(i).getLocalCenter().x, bodies.get(i).getLocalCenter().y);
-//                if (getCanoeAngle() <= 45f || getCanoeAngle() >= 315f){
-//                    bodies.get(i).applyLinearImpulse(-impulseForce, 0, bodies.get(i).getPosition().x, bodies.get(i).getPosition().y, true);
-//                    //bodies.get(i).applyForceToCenter(-150f, 0, true);
-//                    debris.setPosition(bodies.get(i).getPosition().x, bodies.get(i).getPosition().y);
-//                } else if (getCanoeAngle() > 45f && getCanoeAngle() <= 135f){
-//                    bodies.get(i).applyLinearImpulse(0, -impulseForce, bodies.get(i).getPosition().x, bodies.get(i).getPosition().y, true);
-//                    //bodies.get(i).applyForceToCenter(-150f, 0, true);
-//                    debris.setPosition(bodies.get(i).getPosition().x, bodies.get(i).getPosition().y);
-//                } else if (getCanoeAngle() > 135f && getCanoeAngle() <= 225f){
-//                    bodies.get(i).applyLinearImpulse(impulseForce, 0, bodies.get(i).getPosition().x, bodies.get(i).getPosition().y, true);
-//                    //bodies.get(i).applyForceToCenter(-150f, 0, true);
-//                    debris.setPosition(bodies.get(i).getPosition().x, bodies.get(i).getPosition().y);
-//                } else {
-//                    bodies.get(i).applyLinearImpulse(0, impulseForce, bodies.get(i).getPosition().x, bodies.get(i).getPosition().y, true);
-//                    //bodies.get(i).applyForceToCenter(-150f, 0, true);
-//                    debris.setPosition(bodies.get(i).getPosition().x, bodies.get(i).getPosition().y);
-//                }
-//                //bodies.get(i).applyForceToCenter(-150f, 0, true);
-//                //debris.setPosition(bodies.get(i).getPosition().x, bodies.get(i).getPosition().y);
-//                if (debris.getX() < -300 || debris.getX() > 1500 || debris.getY() < -300 || debris.getY() > 1200){
-//                    spaceDebris.removeIndex(i);
-//                    bodies.removeIndex(i);
-//                }
                 i++;
             }
         } else {
@@ -310,26 +262,6 @@ public class GameScreen implements Screen {
                 //debris.setPosition(bodies.get(i).getPosition().x + debris.getWidth(), bodies.get(i).getPosition().y);
                 debris.setPosition(bodies.get(i).getPosition().x - debris.getWidth()/2,  bodies.get(i).getPosition().y - debris.getHeight()/2);
                 debris.setRotation((float) Math.toDegrees(bodies.get(i).getAngle()));
-                //debris.setPosition(bodies.get(i).getLocalCenter().x, bodies.get(i).getLocalCenter().y);
-//                if (getCanoeAngle() <= 45f || getCanoeAngle() >= 315f){
-//                    bodies.get(i).applyForceToCenter(-150f, 0, true);
-//                    debris.setPosition(bodies.get(i).getPosition().x, bodies.get(i).getPosition().y);
-//                } else if (getCanoeAngle() > 45f && getCanoeAngle() <= 135f){
-//                    bodies.get(i).applyForceToCenter(0, -150f, true);
-//                    debris.setPosition(bodies.get(i).getPosition().x, bodies.get(i).getPosition().y);
-//                } else if (getCanoeAngle() > 135f && getCanoeAngle() <= 225f){
-//                    bodies.get(i).applyForceToCenter(150f, 0, true);
-//                    debris.setPosition(bodies.get(i).getPosition().x, bodies.get(i).getPosition().y);
-//                } else {
-//                    bodies.get(i).applyForceToCenter(0, 150f, true);
-//                    debris.setPosition(bodies.get(i).getPosition().x, bodies.get(i).getPosition().y);
-//                }
-//                //bodies.get(i).applyForceToCenter(-150f, 0, true);
-//                //debris.setPosition(bodies.get(i).getPosition().x, bodies.get(i).getPosition().y);
-//                if (debris.getX() < -300 || debris.getX() > 1500 || debris.getY() < -300 || debris.getY() > 1200){
-//                    spaceDebris.removeIndex(i);
-//                    bodies.removeIndex(i);
-//                }
                 i++;
             }
         }
