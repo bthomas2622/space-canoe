@@ -61,6 +61,10 @@ public class GameScreen implements Screen {
     double getCanoeAngleDouble;
     int i;
 
+    /**
+     * contstructor that takes in game object and creates game instance, loads in assets, creates debug renderer, world contact listener, etc.
+     * @param gam SpaceCanoe game object that is rendered, batched, etc.
+     */
     public GameScreen(final SpaceCanoe gam) {
         game = gam;
 
@@ -76,7 +80,7 @@ public class GameScreen implements Screen {
 
         //debug renderer allows us to see physics simulation controlling the scen
         debugRenderer = new Box2DDebugRenderer();
-        // create the camera and the SpriteBatch
+        // create the camera
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1280, 720);
 
@@ -139,9 +143,12 @@ public class GameScreen implements Screen {
         canoeShape.dispose();
     }
 
-    //sets location for new space debris
+    /**
+     * method to spawn new space debris into game world, places based on canoe angle and gives initial velocity
+     */
     private void spawnDebris() {
         Sprite debris = new Sprite(spaceDebrisImage);
+        //place the canoe just outside the screen wherever the canoe is facing
         if (getCanoeAngle() <= 45f || getCanoeAngle() >= 315f){
             debris.setPosition(Gdx.graphics.getWidth() + debris.getWidth() / 2, MathUtils.random()*Gdx.graphics.getHeight());
         } else if (getCanoeAngle() > 45f && getCanoeAngle() <= 135f){
@@ -155,6 +162,7 @@ public class GameScreen implements Screen {
         //System.out.println(debris.getX());
         //System.out.println(debris.getY());
 
+        //origin center allows debris to be rotated based off its origin
         debris.setOriginCenter();
         BodyDef debrisBodyDef = new BodyDef();
         debrisBodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -173,6 +181,7 @@ public class GameScreen implements Screen {
         debrisBody.createFixture(debrisFixtureDef);
         //Fixture debrisFixture = canoeBody.createFixture(debrisFixtureDef);
 
+        //initalize velocity to send towards at canoe
         if (getCanoeAngle() <= 45f || getCanoeAngle() >= 315f){
             debrisBody.setLinearVelocity(-100f, 0);
         } else if (getCanoeAngle() > 45f && getCanoeAngle() <= 135f){
@@ -192,22 +201,29 @@ public class GameScreen implements Screen {
         lastDebrisTime = TimeUtils.nanoTime();
     }
 
+    /**
+     * getter method to obtain the current orientation of the canoe
+     * @return float of canoe angle in degrees
+     */
     public float getCanoeAngle(){
         getCanoeAngleDouble = (double) canoeBody.getAngle();
         currentDegrees = (float) Math.toDegrees(getCanoeAngleDouble);
         return currentDegrees;
     };
 
+    /**
+     * setter method to rotate the game sprite and physics body towards new canoe angle
+     * @param degrees
+     */
     public void setCanoeAngle(float degrees){
         //canoe.setRotation((float)Math.toRadians(degrees));
         canoe.setOriginCenter();
         canoe.setRotation(degrees);
         double degreesDouble = (double) degrees;
         //System.out.println(degreesDouble);
-        System.out.println((float) Math.toRadians(degreesDouble));
+        //System.out.println((float) Math.toRadians(degreesDouble));
         canoeBody.setTransform(canoeBody.getPosition(), (float) Math.toRadians(degreesDouble));
         //System.out.println(canoeBody.getAngle());
-        //canoeBody.setTransform(Gdx.graphics.getWidth()/2 - canoe.getWidth() / 2, Gdx.graphics.getHeight() / 2 - canoe.getHeight() / 2),degrees);
     };
 
     @Override
@@ -224,6 +240,7 @@ public class GameScreen implements Screen {
         world.step(1f/60f, 6, 2);
         //canoe.setPosition(canoeBody.getPosition().x, canoeBody.getPosition().y);
 
+        //the impulseForce represents the instant force on the space debris objects as a result of a canoe paddle
         float impulseForce = 100000f;
         if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) {
             //canoe.setRotation((float)Math.toDegrees(30));
@@ -276,8 +293,7 @@ public class GameScreen implements Screen {
         // coordinate system specified by the camera.
         game.batch.setProjectionMatrix(camera.combined);
         debugMatrix = game.batch.getProjectionMatrix().cpy();
-        // begin a new batch and draw the canoe and
-        // all debris
+        // begin a new batch and draw the canoe and all debris
         game.batch.begin();
         game.font.draw(game.batch, "Debris Dodged: " + debrisDodged, 0, 480);
         game.batch.draw(canoe, canoe.getX(), canoe.getY(), canoe.getOriginX(), canoe.getOriginY(), canoe.getWidth(), canoe.getHeight(), canoe.getScaleX(), canoe.getScaleY(), canoe.getRotation());
@@ -286,11 +302,13 @@ public class GameScreen implements Screen {
         }
         game.batch.end();
 
+        //render the debug matrix
         debugRenderer.render(world, debugMatrix);
-        //check if we need to create a new raindrop
+        //check if we need to create a new space debris object based on time in nanoseconds
         if (TimeUtils.nanoTime() - lastDebrisTime > 1000000000)
             spawnDebris();
 
+        //check to see if a collision with the canoe has been detected to generate the game over screen
         if (gameOver){
             game.setScreen(new GameOverScreen(game));
             dispose();
