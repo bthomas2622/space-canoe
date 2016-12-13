@@ -145,11 +145,11 @@ public class GameScreen implements Screen {
         if (getCanoeAngle() <= 45f || getCanoeAngle() >= 315f){
             debris.setPosition(Gdx.graphics.getWidth() + debris.getWidth() / 2, MathUtils.random()*Gdx.graphics.getHeight());
         } else if (getCanoeAngle() > 45f && getCanoeAngle() <= 135f){
-            debris.setPosition(Gdx.graphics.getWidth()*MathUtils.random(), Gdx.graphics.getHeight() + debris.getHeight());
+            debris.setPosition(Gdx.graphics.getWidth()*MathUtils.random(), Gdx.graphics.getHeight() + debris.getHeight()/2);
         } else if (getCanoeAngle() > 135f && getCanoeAngle() <= 225f){
             debris.setPosition(0 - debris.getWidth()/2, Gdx.graphics.getHeight()*MathUtils.random());
         } else {
-            debris.setPosition(Gdx.graphics.getWidth()*MathUtils.random(), 0 - debris.getHeight() / 2);
+            debris.setPosition(Gdx.graphics.getWidth()*MathUtils.random(), 0 - debris.getHeight()/2);
         }
 
         //System.out.println(debris.getX());
@@ -262,6 +262,12 @@ public class GameScreen implements Screen {
                 //debris.setPosition(bodies.get(i).getPosition().x + debris.getWidth(), bodies.get(i).getPosition().y);
                 debris.setPosition(bodies.get(i).getPosition().x - debris.getWidth()/2,  bodies.get(i).getPosition().y - debris.getHeight()/2);
                 debris.setRotation((float) Math.toDegrees(bodies.get(i).getAngle()));
+                //remove avoided space debris
+                if (bodies.get(i).getPosition().x < - debris.getWidth() || bodies.get(i).getPosition().x > Gdx.graphics.getWidth() + debris.getWidth() || bodies.get(i).getPosition().y < -debris.getHeight() || bodies.get(i).getPosition().y > Gdx.graphics.getHeight() + debris.getHeight()){
+                    spaceDebris.removeIndex(i);
+                    bodies.removeIndex(i);
+                    debrisDodged++;
+                }
                 i++;
             }
         }
@@ -319,8 +325,9 @@ public class GameScreen implements Screen {
         canoeImage.dispose();
         spaceDebrisImage.dispose();
         world.dispose();
-        //collisionSound.dispose();
-        //paddleSound.dispose();
-        //backgroundMusic.dispose();
+//        collisionSound.dispose();
+//        paddleSound.dispose();
+//        backgroundMusic.dispose();
+        debugRenderer.dispose();
     }
 }
