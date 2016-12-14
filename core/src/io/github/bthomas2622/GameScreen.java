@@ -6,10 +6,15 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeType;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
@@ -50,7 +55,7 @@ public class GameScreen implements Screen {
     Array<Sprite> spaceDebris;
     ArrayList spaceDebrisList = new ArrayList();
     long lastDebrisTime;
-    int debrisDodged;
+    int debrisDodged = 0;
     World world;
     Body canoeBody;
     Body debrisBody;
@@ -60,6 +65,13 @@ public class GameScreen implements Screen {
     Boolean gameOver = false;
     double getCanoeAngleDouble;
     int i;
+    //font variables
+    FreeTypeFontGenerator generator;
+    FreeTypeFontGenerator.FreeTypeFontParameter parameter;
+    BitmapFont gameFont;
+    GlyphLayout glyphLayout;
+    float countWidth;
+    String debrisDodgedString;
 
     /**
      * contstructor that takes in game object and creates game instance, loads in assets, creates debug renderer, world contact listener, etc.
@@ -134,6 +146,18 @@ public class GameScreen implements Screen {
 
             }
         });
+
+        //create font for dodge counter
+        generator = new FreeTypeFontGenerator(Gdx.files.internal("SpaceMono-Bold.ttf"));
+        parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 30;
+        parameter.color = Color.RED;
+        gameFont = generator.generateFont(parameter);
+        //generating a glyph layout to get the length of the string so i can center it
+        glyphLayout = new GlyphLayout();
+        debrisDodgedString = String.valueOf(debrisDodged);
+        glyphLayout.setText(gameFont,debrisDodgedString);
+        countWidth = glyphLayout.width;
 
         // create the space debris array and spawn the first piece of debris
         spaceDebris = new Array<Sprite>();
@@ -284,6 +308,7 @@ public class GameScreen implements Screen {
                     spaceDebris.removeIndex(i);
                     bodies.removeIndex(i);
                     debrisDodged++;
+                    debrisDodgedString = String.valueOf(debrisDodged);
                 }
                 i++;
             }
@@ -293,9 +318,11 @@ public class GameScreen implements Screen {
         // coordinate system specified by the camera.
         game.batch.setProjectionMatrix(camera.combined);
         debugMatrix = game.batch.getProjectionMatrix().cpy();
+
         // begin a new batch and draw the canoe and all debris
         game.batch.begin();
-        game.font.draw(game.batch, "Debris Dodged: " + debrisDodged, 0, 480);
+        //game.font.draw(game.batch, "Debris Dodged: " + debrisDodged, 0, 480);
+        gameFont.draw(game.batch, debrisDodgedString, Gdx.graphics.getWidth()/2 - countWidth/2, Gdx.graphics.getHeight() - Gdx.graphics.getHeight()/6);
         game.batch.draw(canoe, canoe.getX(), canoe.getY(), canoe.getOriginX(), canoe.getOriginY(), canoe.getWidth(), canoe.getHeight(), canoe.getScaleX(), canoe.getScaleY(), canoe.getRotation());
         for (Sprite debris : spaceDebris) {
             game.batch.draw(debris, debris.getX(), debris.getY(), debris.getOriginX(), debris.getOriginY(), debris.getWidth(), debris.getHeight(), debris.getScaleX(), debris.getScaleY(), debris.getRotation());
@@ -347,5 +374,6 @@ public class GameScreen implements Screen {
 //        paddleSound.dispose();
 //        backgroundMusic.dispose();
         debugRenderer.dispose();
+        generator.dispose();
     }
 }

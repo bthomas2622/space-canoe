@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 /**
@@ -37,11 +38,16 @@ public class MainMenuScreen implements Screen {
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 20;
         gameFont = generator.generateFont(parameter);
+        //generating a glyph layout to get the length of the string so i can center it
+        GlyphLayout glyphLayout = new GlyphLayout();
+        String item = "PRESS 'ENTER'";
+        glyphLayout.setText(gameFont,item);
+        float enterWidth = glyphLayout.width;
         generator.dispose(); //dispose generator to avoid memory leaks
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
-        gameFont.draw(game.batch, "PRESS 'ENTER'", Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/4);
+        gameFont.draw(game.batch, "PRESS 'ENTER'", Gdx.graphics.getWidth()/2 - enterWidth/2, Gdx.graphics.getHeight()/4);
         //game.font.draw(game.batch, "PRESS 'ENTER'", 600, 300);
         game.batch.end();
 
