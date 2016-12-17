@@ -9,7 +9,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.Animation;
 
 /**
  * Created by bthom on 12/7/2016.
@@ -21,16 +24,23 @@ public class MainMenuScreen implements Screen {
     BitmapFont gameFont;
     Texture spaceCanoeImage;
     Sprite headerImage;
+    TextureAtlas textureAtlas;
+    TextureRegion textureRegion;
+    Animation titleAnimation;
+    Float elapsedTime = 0f;
 
     public MainMenuScreen(final SpaceCanoe gam){
         game = gam;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1280, 720);
-        spaceCanoeImage = new Texture(Gdx.files.internal("SpaceCanoe800w.png"));
-        headerImage = new Sprite(spaceCanoeImage);
-        headerImage.setPosition(Gdx.graphics.getWidth()/2 - headerImage.getWidth() / 2, Gdx.graphics.getHeight() - headerImage.getHeight() - 50);
-        headerImage.setOriginCenter();
-        headerImage.setRotation(0f);
+        textureAtlas = new TextureAtlas(Gdx.files.internal("Spritesheets/TitleSprites.atlas")); //reference atlas file in assets folder
+        //textureRegion = textureAtlas.findRegion("01SpaceCanoe800w");
+        //spaceCanoeImage = new Texture(Gdx.files.internal("SpaceCanoe800w.png"));
+//        headerImage = new Sprite(textureRegion);
+//        headerImage.setPosition(Gdx.graphics.getWidth()/2 - headerImage.getWidth() / 2, Gdx.graphics.getHeight() - headerImage.getHeight() - 50);
+//        headerImage.setOriginCenter();
+//        headerImage.setRotation(0f);
+        titleAnimation = new Animation(0.033f, textureAtlas.findRegions("spacecanoe"), Animation.PlayMode.LOOP);
     }
 
     @Override
@@ -50,9 +60,10 @@ public class MainMenuScreen implements Screen {
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
+        elapsedTime += Gdx.graphics.getDeltaTime();
         gameFont.draw(game.batch, "PRESS 'ENTER'", Gdx.graphics.getWidth()/2 - enterWidth/2, Gdx.graphics.getHeight()/4);
         //game.font.draw(game.batch, "PRESS 'ENTER'", 600, 300);
-        game.batch.draw(headerImage, headerImage.getX(), headerImage.getY(), headerImage.getOriginX(), headerImage.getOriginY(), headerImage.getWidth(), headerImage.getHeight(), headerImage.getScaleX(), headerImage.getScaleY(), headerImage.getRotation());
+        game.batch.draw(titleAnimation.getKeyFrame(elapsedTime, true), 250, 250);
         game.batch.end();
 
         if (Gdx.input.isKeyPressed(Input.Keys.ENTER)){
@@ -83,6 +94,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void dispose(){
+        textureAtlas.dispose();
     }
 
 }

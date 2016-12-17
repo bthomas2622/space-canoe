@@ -1,0 +1,229 @@
+
+TitleSprites.png
+size: 2048,2048
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+spacecanoe
+  rotate: false
+  xy: 2, 1483
+  size: 800, 405
+  orig: 800, 405
+  offset: 0, 0
+  index: 0
+spacecanoe
+  rotate: false
+  xy: 2, 1483
+  size: 800, 405
+  orig: 800, 405
+  offset: 0, 0
+  index: 30
+spacecanoe
+  rotate: false
+  xy: 2, 1083
+  size: 787, 398
+  orig: 787, 398
+  offset: 0, 0
+  index: 1
+spacecanoe
+  rotate: false
+  xy: 2, 1083
+  size: 787, 398
+  orig: 787, 398
+  offset: 0, 0
+  index: 29
+spacecanoe
+  rotate: false
+  xy: 791, 1090
+  size: 774, 391
+  orig: 774, 391
+  offset: 0, 0
+  index: 2
+spacecanoe
+  rotate: false
+  xy: 791, 1090
+  size: 774, 391
+  orig: 774, 391
+  offset: 0, 0
+  index: 28
+spacecanoe
+  rotate: false
+  xy: 804, 1504
+  size: 761, 384
+  orig: 761, 384
+  offset: 0, 0
+  index: 3
+spacecanoe
+  rotate: false
+  xy: 804, 1504
+  size: 761, 384
+  orig: 761, 384
+  offset: 0, 0
+  index: 27
+spacecanoe
+  rotate: false
+  xy: 791, 711
+  size: 748, 377
+  orig: 748, 377
+  offset: 0, 0
+  index: 4
+spacecanoe
+  rotate: false
+  xy: 791, 711
+  size: 748, 377
+  orig: 748, 377
+  offset: 0, 0
+  index: 26
+spacecanoe
+  rotate: false
+  xy: 2, 711
+  size: 735, 370
+  orig: 735, 370
+  offset: 0, 0
+  index: 5
+spacecanoe
+  rotate: false
+  xy: 2, 711
+  size: 735, 370
+  orig: 735, 370
+  offset: 0, 0
+  index: 25
+spacecanoe
+  rotate: false
+  xy: 2, 346
+  size: 722, 363
+  orig: 722, 363
+  offset: 0, 0
+  index: 6
+spacecanoe
+  rotate: false
+  xy: 2, 346
+  size: 722, 363
+  orig: 722, 363
+  offset: 0, 0
+  index: 24
+spacecanoe
+  rotate: false
+  xy: 726, 353
+  size: 709, 356
+  orig: 709, 356
+  offset: 0, 0
+  index: 7
+spacecanoe
+  rotate: false
+  xy: 726, 353
+  size: 709, 356
+  orig: 709, 356
+  offset: 0, 0
+  index: 23
+spacecanoe
+  rotate: false
+  xy: 1437, 406
+  size: 605, 303
+  orig: 605, 303
+  offset: 0, 0
+  index: 15
+spacecanoe
+  rotate: false
+  xy: 726, 2
+  size: 696, 349
+  orig: 696, 349
+  offset: 0, 0
+  index: 8
+spacecanoe
+  rotate: false
+  xy: 726, 2
+  size: 696, 349
+  orig: 696, 349
+  offset: 0, 0
+  index: 22
+spacecanoe
+  rotate: false
+  xy: 2, 2
+  size: 683, 342
+  orig: 683, 342
+  offset: 0, 0
+  index: 9
+spacecanoe
+  rotate: false
+  xy: 2, 2
+  size: 683, 342
+  orig: 683, 342
+  offset: 0, 0
+  index: 21
+spacecanoe
+  rotate: false
+  xy: 1424, 42
+  size: 618, 309
+  orig: 618, 309
+  offset: 0, 0
+  index: 14
+spacecanoe
+  rotate: false
+  xy: 1424, 42
+  size: 618, 309
+  orig: 618, 309
+  offset: 0, 0
+  index: 16
+
+TitleSprites2.png
+size: 2048,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+spacecanoe
+  rotate: false
+  xy: 2, 651
+  size: 670, 335
+  orig: 670, 335
+  offset: 0, 0
+  index: 10
+spacecanoe
+  rotate: false
+  xy: 2, 651
+  size: 670, 335
+  orig: 670, 335
+  offset: 0, 0
+  index: 20
+spacecanoe
+  rotate: false
+  xy: 2, 320
+  size: 657, 329
+  orig: 657, 329
+  offset: 0, 0
+  index: 11
+spacecanoe
+  rotate: false
+  xy: 2, 320
+  size: 657, 329
+  orig: 657, 329
+  offset: 0, 0
+  index: 19
+spacecanoe
+  rotate: false
+  xy: 674, 664
+  size: 644, 322
+  orig: 644, 322
+  offset: 0, 0
+  index: 12
+spacecanoe
+  rotate: false
+  xy: 674, 664
+  size: 644, 322
+  orig: 644, 322
+  offset: 0, 0
+  index: 18
+spacecanoe
+  rotate: false
+  xy: 2, 2
+  size: 631, 316
+  orig: 631, 316
+  offset: 0, 0
+  index: 13
+spacecanoe
+  rotate: false
+  xy: 2, 2
+  size: 631, 316
+  orig: 631, 316
+  offset: 0, 0
+  index: 17
