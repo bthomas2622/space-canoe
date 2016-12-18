@@ -40,7 +40,7 @@ public class MainMenuScreen implements Screen {
 //        headerImage.setPosition(Gdx.graphics.getWidth()/2 - headerImage.getWidth() / 2, Gdx.graphics.getHeight() - headerImage.getHeight() - 50);
 //        headerImage.setOriginCenter();
 //        headerImage.setRotation(0f);
-        titleAnimation = new Animation(0.033f, textureAtlas.findRegions("spacecanoe"), Animation.PlayMode.LOOP);
+        titleAnimation = new Animation(0.066f, textureAtlas.findRegions("spacecanoe"), Animation.PlayMode.LOOP);
     }
 
     @Override

@@ -6,224 +6,217 @@ filter: Nearest,Nearest
 repeat: none
 spacecanoe
   rotate: false
-  xy: 2, 1483
+  xy: 2, 1609
   size: 800, 405
   orig: 800, 405
   offset: 0, 0
   index: 0
 spacecanoe
   rotate: false
-  xy: 2, 1483
-  size: 800, 405
-  orig: 800, 405
-  offset: 0, 0
-  index: 30
-spacecanoe
-  rotate: false
-  xy: 2, 1083
-  size: 787, 398
-  orig: 787, 398
+  xy: 2, 1205
+  size: 798, 402
+  orig: 798, 402
   offset: 0, 0
   index: 1
 spacecanoe
   rotate: false
-  xy: 2, 1083
-  size: 787, 398
-  orig: 787, 398
+  xy: 2, 1205
+  size: 798, 402
+  orig: 798, 402
   offset: 0, 0
   index: 29
 spacecanoe
   rotate: false
-  xy: 791, 1090
-  size: 774, 391
-  orig: 774, 391
+  xy: 804, 1613
+  size: 796, 401
+  orig: 796, 401
   offset: 0, 0
   index: 2
 spacecanoe
   rotate: false
-  xy: 791, 1090
-  size: 774, 391
-  orig: 774, 391
+  xy: 804, 1613
+  size: 796, 401
+  orig: 796, 401
   offset: 0, 0
   index: 28
 spacecanoe
   rotate: false
-  xy: 804, 1504
-  size: 761, 384
-  orig: 761, 384
+  xy: 2, 803
+  size: 794, 400
+  orig: 794, 400
   offset: 0, 0
   index: 3
 spacecanoe
   rotate: false
-  xy: 804, 1504
-  size: 761, 384
-  orig: 761, 384
+  xy: 2, 803
+  size: 794, 400
+  orig: 794, 400
   offset: 0, 0
   index: 27
 spacecanoe
   rotate: false
-  xy: 791, 711
-  size: 748, 377
-  orig: 748, 377
+  xy: 2, 402
+  size: 792, 399
+  orig: 792, 399
   offset: 0, 0
   index: 4
 spacecanoe
   rotate: false
-  xy: 791, 711
-  size: 748, 377
-  orig: 748, 377
+  xy: 2, 402
+  size: 792, 399
+  orig: 792, 399
   offset: 0, 0
   index: 26
 spacecanoe
   rotate: false
-  xy: 2, 711
-  size: 735, 370
-  orig: 735, 370
+  xy: 2, 2
+  size: 790, 398
+  orig: 790, 398
   offset: 0, 0
   index: 5
 spacecanoe
   rotate: false
-  xy: 2, 711
-  size: 735, 370
-  orig: 735, 370
+  xy: 2, 2
+  size: 790, 398
+  orig: 790, 398
   offset: 0, 0
   index: 25
 spacecanoe
   rotate: false
-  xy: 2, 346
-  size: 722, 363
-  orig: 722, 363
+  xy: 804, 1214
+  size: 788, 397
+  orig: 788, 397
   offset: 0, 0
   index: 6
 spacecanoe
   rotate: false
-  xy: 2, 346
-  size: 722, 363
-  orig: 722, 363
+  xy: 804, 1214
+  size: 788, 397
+  orig: 788, 397
   offset: 0, 0
   index: 24
 spacecanoe
   rotate: false
-  xy: 726, 353
-  size: 709, 356
-  orig: 709, 356
+  xy: 802, 816
+  size: 786, 396
+  orig: 786, 396
   offset: 0, 0
   index: 7
 spacecanoe
   rotate: false
-  xy: 726, 353
-  size: 709, 356
-  orig: 709, 356
+  xy: 802, 816
+  size: 786, 396
+  orig: 786, 396
   offset: 0, 0
   index: 23
 spacecanoe
   rotate: false
-  xy: 1437, 406
-  size: 605, 303
-  orig: 605, 303
-  offset: 0, 0
-  index: 15
-spacecanoe
-  rotate: false
-  xy: 726, 2
-  size: 696, 349
-  orig: 696, 349
+  xy: 798, 419
+  size: 784, 395
+  orig: 784, 395
   offset: 0, 0
   index: 8
 spacecanoe
   rotate: false
-  xy: 726, 2
-  size: 696, 349
-  orig: 696, 349
+  xy: 798, 419
+  size: 784, 395
+  orig: 784, 395
   offset: 0, 0
   index: 22
 spacecanoe
   rotate: false
-  xy: 2, 2
-  size: 683, 342
-  orig: 683, 342
+  xy: 796, 23
+  size: 782, 394
+  orig: 782, 394
   offset: 0, 0
   index: 9
 spacecanoe
   rotate: false
-  xy: 2, 2
-  size: 683, 342
-  orig: 683, 342
+  xy: 796, 23
+  size: 782, 394
+  orig: 782, 394
   offset: 0, 0
   index: 21
-spacecanoe
-  rotate: false
-  xy: 1424, 42
-  size: 618, 309
-  orig: 618, 309
-  offset: 0, 0
-  index: 14
-spacecanoe
-  rotate: false
-  xy: 1424, 42
-  size: 618, 309
-  orig: 618, 309
-  offset: 0, 0
-  index: 16
 
 TitleSprites2.png
-size: 2048,1024
+size: 2048,2048
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
 spacecanoe
   rotate: false
-  xy: 2, 651
-  size: 670, 335
-  orig: 670, 335
+  xy: 2, 1569
+  size: 780, 393
+  orig: 780, 393
   offset: 0, 0
   index: 10
 spacecanoe
   rotate: false
-  xy: 2, 651
-  size: 670, 335
-  orig: 670, 335
+  xy: 2, 1569
+  size: 780, 393
+  orig: 780, 393
   offset: 0, 0
   index: 20
 spacecanoe
   rotate: false
-  xy: 2, 320
-  size: 657, 329
-  orig: 657, 329
+  xy: 2, 1175
+  size: 778, 392
+  orig: 778, 392
   offset: 0, 0
   index: 11
 spacecanoe
   rotate: false
-  xy: 2, 320
-  size: 657, 329
-  orig: 657, 329
+  xy: 2, 1175
+  size: 778, 392
+  orig: 778, 392
   offset: 0, 0
   index: 19
 spacecanoe
   rotate: false
-  xy: 674, 664
-  size: 644, 322
-  orig: 644, 322
+  xy: 784, 1571
+  size: 776, 391
+  orig: 776, 391
   offset: 0, 0
   index: 12
 spacecanoe
   rotate: false
-  xy: 674, 664
-  size: 644, 322
-  orig: 644, 322
+  xy: 784, 1571
+  size: 776, 391
+  orig: 776, 391
   offset: 0, 0
   index: 18
 spacecanoe
   rotate: false
-  xy: 2, 2
-  size: 631, 316
-  orig: 631, 316
+  xy: 2, 783
+  size: 774, 390
+  orig: 774, 390
   offset: 0, 0
   index: 13
 spacecanoe
   rotate: false
-  xy: 2, 2
-  size: 631, 316
-  orig: 631, 316
+  xy: 2, 783
+  size: 774, 390
+  orig: 774, 390
   offset: 0, 0
   index: 17
+spacecanoe
+  rotate: false
+  xy: 2, 392
+  size: 772, 389
+  orig: 772, 389
+  offset: 0, 0
+  index: 14
+spacecanoe
+  rotate: false
+  xy: 2, 392
+  size: 772, 389
+  orig: 772, 389
+  offset: 0, 0
+  index: 16
+spacecanoe
+  rotate: false
+  xy: 2, 2
+  size: 770, 388
+  orig: 770, 388
+  offset: 0, 0
+  index: 15
