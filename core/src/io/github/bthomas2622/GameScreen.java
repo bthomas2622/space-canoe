@@ -81,7 +81,7 @@ public class GameScreen implements Screen {
         game = gam;
 
         // load the images for the canoe and the space debris
-        canoeImage = new Texture(Gdx.files.internal("holderRectangle.PNG"));
+        canoeImage = new Texture(Gdx.files.internal("canoeSprite.png"));
         spaceDebrisImage = new Texture(Gdx.files.internal("holderSquare.png"));
 
         // load the drop sound effect and the rain background "music"
