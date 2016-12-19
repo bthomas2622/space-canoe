@@ -46,6 +46,7 @@ public class GameScreen implements Screen {
     final SpaceCanoe game;
     Texture canoeImage;
     Texture spaceDebrisImage;
+    Texture backgroundSpaceImage;
     Sound paddleSound;
     Sound collisionSound;
     Box2DDebugRenderer debugRenderer;
@@ -86,6 +87,7 @@ public class GameScreen implements Screen {
         // load the images for the canoe and the space debris
         canoeImage = new Texture(Gdx.files.internal("canoeSprite.png"));
         spaceDebrisImage = new Texture(Gdx.files.internal("holderSquare.png"));
+        backgroundSpaceImage = new Texture(Gdx.files.internal("spaceBackground1280.png"));
 
         // load the drop sound effect and the rain background "music"
 //        paddleSound = Gdx.audio.newSound(Gdx.files.internal("TBD"));
@@ -337,6 +339,7 @@ public class GameScreen implements Screen {
 
         // begin a new batch and draw the canoe and all debris
         game.batch.begin();
+        game.batch.draw(backgroundSpaceImage, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         //game.font.draw(game.batch, "Debris Dodged: " + debrisDodged, 0, 480);
         gameFont.draw(game.batch, debrisDodgedString, Gdx.graphics.getWidth()/2 - countWidth/2, Gdx.graphics.getHeight() - Gdx.graphics.getHeight()/6);
         game.batch.draw(canoe, canoe.getX(), canoe.getY(), canoe.getOriginX(), canoe.getOriginY(), canoe.getWidth(), canoe.getHeight(), canoe.getScaleX(), canoe.getScaleY(), canoe.getRotation());
