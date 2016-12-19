@@ -61,6 +61,7 @@ public class GameScreen implements Screen {
     Body canoeBody;
     Body debrisBody;
     Array<Body> bodies;
+    Array<Fixture> debrisBodyFixture;
     float torque = 0.0f;
     float currentDegrees;
     Boolean gameOver = false;
@@ -318,8 +319,10 @@ public class GameScreen implements Screen {
                 debris.setRotation((float) Math.toDegrees(bodies.get(i).getAngle()));
                 //remove avoided space debris
                 if (bodies.get(i).getPosition().x < - debris.getWidth() || bodies.get(i).getPosition().x > Gdx.graphics.getWidth() + debris.getWidth() || bodies.get(i).getPosition().y < -debris.getHeight() || bodies.get(i).getPosition().y > Gdx.graphics.getHeight() + debris.getHeight()){
-                    spaceDebris.removeIndex(i);
-                    bodies.removeIndex(i);
+                    spaceDebris.removeIndex(i); //destroys sprite associated with dodged debris
+                    debrisBodyFixture = bodies.get(i).getFixtureList();
+                    bodies.get(i).destroyFixture(debrisBodyFixture.first()); //destroys body fixture associated with dodged debris
+                    bodies.removeIndex(i); //destroys body associated with dodged debris
                     debrisDodged++;
                     debrisDodgedString = String.valueOf(debrisDodged);
                 }
