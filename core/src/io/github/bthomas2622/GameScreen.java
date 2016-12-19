@@ -32,6 +32,7 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.FloatArray;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.ArrayList;
@@ -72,6 +73,7 @@ public class GameScreen implements Screen {
     GlyphLayout glyphLayout;
     float countWidth;
     String debrisDodgedString;
+    float[] canoePolygon;
 
     /**
      * contstructor that takes in game object and creates game instance, loads in assets, creates debug renderer, world contact listener, etc.
@@ -114,7 +116,18 @@ public class GameScreen implements Screen {
         canoeBody = world.createBody(canoeBodyDef);
         //define dimensions of the canoe physics shape
         PolygonShape canoeShape = new PolygonShape();
-        canoeShape.setAsBox(canoe.getWidth()/2, canoe.getHeight()/2);
+        //canoeShape.setAsBox(canoe.getWidth()/2, canoe.getHeight()/2);
+        //float array of indices that make up shape of canoe for hit detection, it is a diamond, coordinates or with origin at center of canoe
+        canoePolygon = new float[8];
+        canoePolygon[0] = -112f;
+        canoePolygon[1] = 0f;
+        canoePolygon[2] = 0f;
+        canoePolygon[3] = 26f;
+        canoePolygon[4] = 112f;
+        canoePolygon[5] = 0f;
+        canoePolygon[6] = 0f;
+        canoePolygon[7] = -26f;
+        canoeShape.set(canoePolygon);
         //FixtureDef defines shape of body and properties like density
         FixtureDef canoeFixtureDef = new FixtureDef();
         canoeFixtureDef.shape = canoeShape;
