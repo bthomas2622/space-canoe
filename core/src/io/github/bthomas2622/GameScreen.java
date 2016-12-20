@@ -47,6 +47,8 @@ public class GameScreen implements Screen {
     Texture canoeImage;
     Texture spaceDebrisImage;
     Texture backgroundSpaceImage;
+    Texture purplePlanetImage;
+    Texture orangePlanetImage;
     Sound paddleSound;
     Sound collisionSound;
     Box2DDebugRenderer debugRenderer;
@@ -54,6 +56,8 @@ public class GameScreen implements Screen {
     Music backgroundMusic;
     OrthographicCamera camera;
     Sprite canoe;
+    Sprite purplePlanet;
+    Sprite orangePlanet;
     Array<Sprite> spaceDebris;
     ArrayList spaceDebrisList = new ArrayList();
     long lastDebrisTime;
@@ -88,6 +92,8 @@ public class GameScreen implements Screen {
         canoeImage = new Texture(Gdx.files.internal("canoeSprite.png"));
         spaceDebrisImage = new Texture(Gdx.files.internal("holderSquare.png"));
         backgroundSpaceImage = new Texture(Gdx.files.internal("spaceBackground1280.png"));
+        purplePlanetImage = new Texture(Gdx.files.internal("purplePlanet.png"));
+        orangePlanetImage = new Texture(Gdx.files.internal("orangePlanet.png"));
 
         // load the drop sound effect and the rain background "music"
 //        paddleSound = Gdx.audio.newSound(Gdx.files.internal("TBD"));
@@ -107,6 +113,14 @@ public class GameScreen implements Screen {
         //need to set origin center of sprite so that future rotations around center of sprite
         canoe.setOriginCenter();
         canoe.setRotation(0f);
+
+        // creating planet sprites
+        purplePlanet = new Sprite(purplePlanetImage);
+        purplePlanet.setPosition(Gdx.graphics.getWidth()* (float) Math.random(), Gdx.graphics.getHeight()* (float) Math.random());
+        purplePlanet.setOriginCenter();
+        orangePlanet = new Sprite(orangePlanetImage);
+        orangePlanet.setPosition(Gdx.graphics.getWidth()* (float) Math.random(), Gdx.graphics.getHeight()* (float) Math.random());
+        orangePlanet.setOriginCenter();
 
         //phyiscs world and bodytypes
         world = new World(new Vector2(0f, 0f), true);
@@ -341,6 +355,8 @@ public class GameScreen implements Screen {
         game.batch.begin();
         game.batch.draw(backgroundSpaceImage, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         //game.font.draw(game.batch, "Debris Dodged: " + debrisDodged, 0, 480);
+        game.batch.draw(purplePlanet, purplePlanet.getX(), purplePlanet.getY(), purplePlanet.getOriginX(), purplePlanet.getOriginY(), purplePlanet.getWidth(), purplePlanet.getHeight(), purplePlanet.getScaleX(), purplePlanet.getScaleY(), purplePlanet.getRotation());
+        game.batch.draw(orangePlanet, orangePlanet.getX(), orangePlanet.getY(), orangePlanet.getOriginX(), orangePlanet.getOriginY(), orangePlanet.getWidth(), orangePlanet.getHeight(), orangePlanet.getScaleX(), orangePlanet.getScaleY(), orangePlanet.getRotation());
         gameFont.draw(game.batch, debrisDodgedString, Gdx.graphics.getWidth()/2 - countWidth/2, Gdx.graphics.getHeight() - Gdx.graphics.getHeight()/6);
         game.batch.draw(canoe, canoe.getX(), canoe.getY(), canoe.getOriginX(), canoe.getOriginY(), canoe.getWidth(), canoe.getHeight(), canoe.getScaleX(), canoe.getScaleY(), canoe.getRotation());
         for (Sprite debris : spaceDebris) {
@@ -388,6 +404,9 @@ public class GameScreen implements Screen {
     public void dispose() {
         canoeImage.dispose();
         spaceDebrisImage.dispose();
+        backgroundSpaceImage.dispose();
+        purplePlanetImage.dispose();
+        orangePlanetImage.dispose();
         world.dispose();
 //        collisionSound.dispose();
 //        paddleSound.dispose();
