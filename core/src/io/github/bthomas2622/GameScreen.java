@@ -113,7 +113,7 @@ public class GameScreen implements Screen {
 //        backgroundMusic.setLooping(true);
 
         //debug renderer allows us to see physics simulation controlling the scen
-        debugRenderer = new Box2DDebugRenderer();
+        //debugRenderer = new Box2DDebugRenderer();
         // create the camera
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1280, 720);
@@ -385,7 +385,7 @@ public class GameScreen implements Screen {
         // tell the SpriteBatch to render in the
         // coordinate system specified by the camera.
         game.batch.setProjectionMatrix(camera.combined);
-        debugMatrix = game.batch.getProjectionMatrix().cpy();
+        //debugMatrix = game.batch.getProjectionMatrix().cpy();
 
         // begin a new batch and draw the canoe and all debris
         game.batch.begin();
@@ -404,7 +404,7 @@ public class GameScreen implements Screen {
         game.batch.end();
 
         //render the debug matrix
-        debugRenderer.render(world, debugMatrix);
+        //debugRenderer.render(world, debugMatrix);
         //check if we need to create a new space debris object based on time in nanoseconds
         if (TimeUtils.nanoTime() - lastDebrisTime > 1000000000)
             spawnDebris();
@@ -453,7 +453,7 @@ public class GameScreen implements Screen {
 //        collisionSound.dispose();
 //        paddleSound.dispose();
 //        backgroundMusic.dispose();
-        debugRenderer.dispose();
+        //debugRenderer.dispose();
         generator.dispose();
     }
 }
