@@ -90,7 +90,7 @@ public class GameScreen implements Screen {
 
         // load the images for the canoe and the space debris
         canoeImage = new Texture(Gdx.files.internal("canoeSprite.png"));
-        spaceDebrisImage = new Texture(Gdx.files.internal("holderSquare.png"));
+        spaceDebrisImage = new Texture(Gdx.files.internal("spaceDebris.png"));
         backgroundSpaceImage = new Texture(Gdx.files.internal("spaceBackground1280.png"));
         purplePlanetImage = new Texture(Gdx.files.internal("purplePlanet.png"));
         orangePlanetImage = new Texture(Gdx.files.internal("orangePlanet.png"));
