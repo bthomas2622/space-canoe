@@ -23,6 +23,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
@@ -46,6 +47,8 @@ public class GameScreen implements Screen {
     final SpaceCanoe game;
     Texture canoeImage;
     Texture spaceDebrisImage;
+    Texture spaceDebrisImageLarge;
+    Texture spaceDebrisImageLargest;
     Texture backgroundSpaceImage;
     Texture purplePlanetImage;
     Texture orangePlanetImage;
@@ -80,6 +83,7 @@ public class GameScreen implements Screen {
     float countWidth;
     String debrisDodgedString;
     float[] canoePolygon;
+    float debrisDiceRoller;
 
     /**
      * contstructor that takes in game object and creates game instance, loads in assets, creates debug renderer, world contact listener, etc.
@@ -91,6 +95,8 @@ public class GameScreen implements Screen {
         // load the images for the canoe and the space debris
         canoeImage = new Texture(Gdx.files.internal("canoeSprite.png"));
         spaceDebrisImage = new Texture(Gdx.files.internal("spaceDebris.png"));
+        spaceDebrisImageLarge = new Texture(Gdx.files.internal("spaceDebris100.png"));
+        spaceDebrisImageLargest = new Texture(Gdx.files.internal("spaceDebris150.png"));
         backgroundSpaceImage = new Texture(Gdx.files.internal("spaceBackground1280.png"));
         purplePlanetImage = new Texture(Gdx.files.internal("purplePlanet.png"));
         orangePlanetImage = new Texture(Gdx.files.internal("orangePlanet.png"));
@@ -201,7 +207,17 @@ public class GameScreen implements Screen {
      * method to spawn new space debris into game world, places based on canoe angle and gives initial velocity
      */
     private void spawnDebris() {
-        Sprite debris = new Sprite(spaceDebrisImage);
+        debrisDiceRoller = MathUtils.random(10f);
+        Sprite debris;
+        if (debrisDiceRoller <= 6f){
+            debris = new Sprite(spaceDebrisImage);
+        }
+        else if (debrisDiceRoller <= 9){
+            debris = new Sprite(spaceDebrisImageLarge);
+        }
+        else {
+            debris = new Sprite(spaceDebrisImageLargest);
+        }
         //place the canoe just outside the screen wherever the canoe is facing
         if (getCanoeAngle() <= 45f || getCanoeAngle() >= 315f){
             debris.setPosition(Gdx.graphics.getWidth() + debris.getWidth() / 2, MathUtils.random()*Gdx.graphics.getHeight());
@@ -224,8 +240,10 @@ public class GameScreen implements Screen {
         //create body in world using our definition
         debrisBody = world.createBody(debrisBodyDef);
         //define dimensions of the canoe physics shape
-        PolygonShape debrisShape = new PolygonShape();
-        debrisShape.setAsBox(debris.getWidth()/2, debris.getHeight()/2);
+        //PolygonShape debrisShape = new PolygonShape();
+        CircleShape debrisShape = new CircleShape();
+        debrisShape.setRadius(debris.getWidth()/2);
+        //debrisShape.setAsBox(debris.getWidth()/2, debris.getHeight()/2);
         //FixtureDef defines shape of body and properties like density
         FixtureDef debrisFixtureDef = new FixtureDef();
         debrisFixtureDef.shape = debrisShape;
@@ -404,6 +422,8 @@ public class GameScreen implements Screen {
     public void dispose() {
         canoeImage.dispose();
         spaceDebrisImage.dispose();
+        spaceDebrisImageLarge.dispose();
+        spaceDebrisImageLargest.dispose();
         backgroundSpaceImage.dispose();
         purplePlanetImage.dispose();
         orangePlanetImage.dispose();
