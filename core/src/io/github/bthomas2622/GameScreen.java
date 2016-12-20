@@ -52,6 +52,7 @@ public class GameScreen implements Screen {
     Texture backgroundSpaceImage;
     Texture purplePlanetImage;
     Texture orangePlanetImage;
+    Texture paddleImage;
     Sound paddleSound;
     Sound collisionSound;
     Box2DDebugRenderer debugRenderer;
@@ -59,6 +60,7 @@ public class GameScreen implements Screen {
     Music backgroundMusic;
     OrthographicCamera camera;
     Sprite canoe;
+    Sprite paddle;
     Sprite purplePlanet;
     Sprite orangePlanet;
     Array<Sprite> spaceDebris;
@@ -84,6 +86,8 @@ public class GameScreen implements Screen {
     String debrisDodgedString;
     float[] canoePolygon;
     float debrisDiceRoller;
+    Boolean drawPaddle = false;
+    double doubleCanoeAngleInRadians;
 
     /**
      * contstructor that takes in game object and creates game instance, loads in assets, creates debug renderer, world contact listener, etc.
@@ -100,6 +104,7 @@ public class GameScreen implements Screen {
         backgroundSpaceImage = new Texture(Gdx.files.internal("spaceBackground1280.png"));
         purplePlanetImage = new Texture(Gdx.files.internal("purplePlanet.png"));
         orangePlanetImage = new Texture(Gdx.files.internal("orangePlanet.png"));
+        paddleImage = new Texture(Gdx.files.internal("paddle25.png"));
 
         // load the drop sound effect and the rain background "music"
 //        paddleSound = Gdx.audio.newSound(Gdx.files.internal("TBD"));
@@ -127,6 +132,10 @@ public class GameScreen implements Screen {
         orangePlanet = new Sprite(orangePlanetImage);
         orangePlanet.setPosition(Gdx.graphics.getWidth()* (float) Math.random(), Gdx.graphics.getHeight()* (float) Math.random());
         orangePlanet.setOriginCenter();
+
+        paddle = new Sprite(paddleImage);
+        //placeholder position for paddle
+        paddle.setPosition(Gdx.graphics.getWidth()/2 - paddle.getWidth() / 2, Gdx.graphics.getHeight() / 2 - paddle.getHeight() / 2);
 
         //phyiscs world and bodytypes
         world = new World(new Vector2(0f, 0f), true);
@@ -321,7 +330,7 @@ public class GameScreen implements Screen {
             else
                 setCanoeAngle(getCanoeAngle() + 30f);
             i = 0;
-            double doubleCanoeAngleInRadians = Math.toRadians((double) getCanoeAngle());
+            doubleCanoeAngleInRadians = Math.toRadians((double) getCanoeAngle());
             for (Sprite debris : spaceDebris) {
                 bodies.get(i).applyLinearImpulse(-impulseForce*(float)Math.cos(doubleCanoeAngleInRadians), -impulseForce*(float)Math.sin(doubleCanoeAngleInRadians), canoe.getOriginX(), canoe.getOriginY(), true);
                 //debris.setPosition(bodies.get(i).getPosition().x + debris.getWidth(), bodies.get(i).getPosition().y);
@@ -336,7 +345,7 @@ public class GameScreen implements Screen {
             else
                 setCanoeAngle((getCanoeAngle() - 30f));
             i = 0;
-            double doubleCanoeAngleInRadians = Math.toRadians((double) getCanoeAngle());
+            doubleCanoeAngleInRadians = Math.toRadians((double) getCanoeAngle());
             for (Sprite debris : spaceDebris) {
                 bodies.get(i).applyLinearImpulse(-impulseForce*(float)Math.cos(doubleCanoeAngleInRadians), -impulseForce*(float)Math.sin(doubleCanoeAngleInRadians), canoe.getOriginX(), canoe.getOriginY(), true);
                 //debris.setPosition(bodies.get(i).getPosition().x + debris.getWidth(), bodies.get(i).getPosition().y);
@@ -363,6 +372,15 @@ public class GameScreen implements Screen {
                 i++;
             }
         }
+        drawPaddle = false;
+        doubleCanoeAngleInRadians = Math.toRadians((double) getCanoeAngle());
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            drawPaddle = true;
+            paddle.setPosition(Gdx.graphics.getWidth()/2 - paddle.getWidth()/2 + (canoe.getWidth()/3)*(float)Math.sin(doubleCanoeAngleInRadians), Gdx.graphics.getHeight()/2 - paddle.getHeight()/2 - (canoe.getWidth()/3)*(float)Math.cos(doubleCanoeAngleInRadians));
+        } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+            drawPaddle = true;
+            paddle.setPosition(Gdx.graphics.getWidth()/2 - paddle.getWidth()/2 - (canoe.getWidth()/3)*(float)Math.sin(doubleCanoeAngleInRadians), Gdx.graphics.getHeight()/2 - paddle.getHeight()/2 + (canoe.getWidth()/3)*(float)Math.cos(doubleCanoeAngleInRadians));
+        }
         //System.out.println(getCanoeAngle());
         // tell the SpriteBatch to render in the
         // coordinate system specified by the camera.
@@ -377,6 +395,9 @@ public class GameScreen implements Screen {
         game.batch.draw(orangePlanet, orangePlanet.getX(), orangePlanet.getY(), orangePlanet.getOriginX(), orangePlanet.getOriginY(), orangePlanet.getWidth(), orangePlanet.getHeight(), orangePlanet.getScaleX(), orangePlanet.getScaleY(), orangePlanet.getRotation());
         gameFont.draw(game.batch, debrisDodgedString, Gdx.graphics.getWidth()/2 - countWidth/2, Gdx.graphics.getHeight() - Gdx.graphics.getHeight()/6);
         game.batch.draw(canoe, canoe.getX(), canoe.getY(), canoe.getOriginX(), canoe.getOriginY(), canoe.getWidth(), canoe.getHeight(), canoe.getScaleX(), canoe.getScaleY(), canoe.getRotation());
+        if (drawPaddle){
+            game.batch.draw(paddle, paddle.getX(), paddle.getY(), paddle.getOriginX(), paddle.getOriginY(), paddle.getWidth(), paddle.getHeight(), paddle.getScaleX(), paddle.getScaleY(), paddle.getRotation());
+        }
         for (Sprite debris : spaceDebris) {
             game.batch.draw(debris, debris.getX(), debris.getY(), debris.getOriginX(), debris.getOriginY(), debris.getWidth(), debris.getHeight(), debris.getScaleX(), debris.getScaleY(), debris.getRotation());
         }
@@ -427,6 +448,7 @@ public class GameScreen implements Screen {
         backgroundSpaceImage.dispose();
         purplePlanetImage.dispose();
         orangePlanetImage.dispose();
+        paddleImage.dispose();
         world.dispose();
 //        collisionSound.dispose();
 //        paddleSound.dispose();
