@@ -89,6 +89,7 @@ public class GameScreen implements Screen {
     Boolean drawPaddle = false;
     double doubleCanoeAngleInRadians;
     int rows = 0;
+    double degreesDouble;
 
     /**
      * contstructor that takes in game object and creates game instance, loads in assets, creates debug renderer, world contact listener, etc.
@@ -96,13 +97,12 @@ public class GameScreen implements Screen {
      */
     public GameScreen(final SpaceCanoe gam) {
         game = gam;
-
         // load the images for the canoe and the space debris
         canoeImage = new Texture(Gdx.files.internal("canoeSprite.png"));
         spaceDebrisImage = new Texture(Gdx.files.internal("spaceDebris.png"));
         spaceDebrisImageLarge = new Texture(Gdx.files.internal("spaceDebris100.png"));
         spaceDebrisImageLargest = new Texture(Gdx.files.internal("spaceDebris150.png"));
-        backgroundSpaceImage = new Texture(Gdx.files.internal("spaceBackground1280.png"));
+        backgroundSpaceImage = new Texture(Gdx.files.internal("spaceBackground1920.png"));
         purplePlanetImage = new Texture(Gdx.files.internal("purplePlanet.png"));
         orangePlanetImage = new Texture(Gdx.files.internal("orangePlanet.png"));
         paddleImage = new Texture(Gdx.files.internal("paddle25.png"));
@@ -117,7 +117,9 @@ public class GameScreen implements Screen {
         //debugRenderer = new Box2DDebugRenderer();
         // create the camera
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 1280, 720);
+        //camera.setToOrtho(false, 1280, 720);
+        camera.setToOrtho(false, 1920, 1080);
+
 
         // creating canoe sprite
         canoe = new Sprite(canoeImage);
@@ -301,7 +303,7 @@ public class GameScreen implements Screen {
         //canoe.setRotation((float)Math.toRadians(degrees));
         canoe.setOriginCenter();
         canoe.setRotation(degrees);
-        double degreesDouble = (double) degrees;
+        degreesDouble = (double) degrees;
         //System.out.println(degreesDouble);
         //System.out.println((float) Math.toRadians(degreesDouble));
         canoeBody.setTransform(canoeBody.getPosition(), (float) Math.toRadians(degreesDouble));
@@ -421,6 +423,11 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
+        camera.setToOrtho(false, width, height);
+        //re-eastablish canoe parameters with new screen size
+        canoe.setPosition(Gdx.graphics.getWidth()/2 - canoe.getWidth() / 2, Gdx.graphics.getHeight() / 2 - canoe.getHeight() / 2);
+        canoeBody.setTransform(canoe.getX() + canoe.getWidth() / 2, canoe.getY() + canoe.getHeight() / 2, (float) Math.toRadians(degreesDouble));
+        camera.update();
     }
 
     @Override

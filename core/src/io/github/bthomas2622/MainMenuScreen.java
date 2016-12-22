@@ -35,14 +35,9 @@ public class MainMenuScreen implements Screen {
     public MainMenuScreen(final SpaceCanoe gam){
         game = gam;
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 1280, 720);
+        //camera.setToOrtho(false, 1280, 720);
+        camera.setToOrtho(false, 1920, 1080);
         textureAtlas = new TextureAtlas(Gdx.files.internal("Spritesheets/TitleSprites.atlas")); //reference atlas file in assets folder
-        //textureRegion = textureAtlas.findRegion("01SpaceCanoe800w");
-        //spaceCanoeImage = new Texture(Gdx.files.internal("SpaceCanoe800w.png"));
-//        headerImage = new Sprite(textureRegion);
-//        headerImage.setPosition(Gdx.graphics.getWidth()/2 - headerImage.getWidth() / 2, Gdx.graphics.getHeight() - headerImage.getHeight() - 50);
-//        headerImage.setOriginCenter();
-//        headerImage.setRotation(0f);
         titleAnimation = new Animation(0.066f, textureAtlas.findRegions("spacecanoe"), Animation.PlayMode.LOOP);
         rightPaddleImage = new Texture(Gdx.files.internal("canoePaddleRight.png"));
         leftPaddleImage = new Texture(Gdx.files.internal("canoePaddleLeft.png"));
@@ -54,7 +49,7 @@ public class MainMenuScreen implements Screen {
         leftPaddle.setPosition(Gdx.graphics.getWidth()/2 + leftPaddle.getWidth(), 0);
         leftPaddle.setOriginCenter();
         leftPaddle.setRotation(0f);
-        backgroundSpaceImage = new Texture(Gdx.files.internal("spaceBackground1280.png"));
+        backgroundSpaceImage = new Texture(Gdx.files.internal("spaceBackground1920.png"));
     }
 
     @Override
@@ -63,7 +58,7 @@ public class MainMenuScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("SpaceMono-Bold.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 20;
+        parameter.size = 30;
         gameFont = generator.generateFont(parameter);
         //generating a glyph layout to get the length of the string so i can center it
         GlyphLayout glyphLayout = new GlyphLayout();
@@ -77,7 +72,7 @@ public class MainMenuScreen implements Screen {
         game.batch.draw(backgroundSpaceImage, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         elapsedTime += Gdx.graphics.getDeltaTime();
         gameFont.draw(game.batch, item, Gdx.graphics.getWidth()/2 - enterWidth/2, Gdx.graphics.getHeight()/4.5f);
-        game.batch.draw(titleAnimation.getKeyFrame(elapsedTime, true), Gdx.graphics.getHeight()/2.75f, Gdx.graphics.getHeight()/3);
+        game.batch.draw(titleAnimation.getKeyFrame(elapsedTime, true), Gdx.graphics.getWidth()/2 - 400, Gdx.graphics.getHeight()/2);
         game.batch.draw(rightPaddle, rightPaddle.getX(), rightPaddle.getY(), rightPaddle.getOriginX(), rightPaddle.getOriginY(), rightPaddle.getWidth(), rightPaddle.getHeight(), rightPaddle.getScaleX(), rightPaddle.getScaleY(), rightPaddle.getRotation());
         game.batch.draw(leftPaddle, leftPaddle.getX(), leftPaddle.getY(), leftPaddle.getOriginX(), leftPaddle.getOriginY(), leftPaddle.getWidth(), leftPaddle.getHeight(), leftPaddle.getScaleX(), leftPaddle.getScaleY(), leftPaddle.getRotation());
         game.batch.end();
@@ -90,6 +85,10 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void resize(int width, int height){
+        camera.setToOrtho(false, width, height);
+        rightPaddle.setPosition(Gdx.graphics.getWidth()/2 - rightPaddle.getWidth()*2, 0);
+        leftPaddle.setPosition(Gdx.graphics.getWidth()/2 + leftPaddle.getWidth(), 0);
+        camera.update();
     }
 
     @Override

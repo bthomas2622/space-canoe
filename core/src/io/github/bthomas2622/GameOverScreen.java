@@ -32,8 +32,9 @@ public class GameOverScreen implements Screen {
     public GameOverScreen(final SpaceCanoe gam, int dodged, int rows) {
         game = gam;
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 1280, 720);
-        backgroundSpaceImage = new Texture(Gdx.files.internal("spaceBackground1280.png"));
+        //camera.setToOrtho(false, 1280, 720);
+        camera.setToOrtho(false, 1920, 1080);
+        backgroundSpaceImage = new Texture(Gdx.files.internal("spaceBackground1920.png"));
         debrisDodged = dodged;
         timesRowed = rows;
     }
@@ -76,6 +77,8 @@ public class GameOverScreen implements Screen {
 
     @Override
     public void resize(int width, int height){
+        camera.setToOrtho(false, width, height);
+        camera.update();
     }
 
     @Override
