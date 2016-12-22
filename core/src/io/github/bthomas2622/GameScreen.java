@@ -88,6 +88,7 @@ public class GameScreen implements Screen {
     float debrisDiceRoller;
     Boolean drawPaddle = false;
     double doubleCanoeAngleInRadians;
+    int rows = 0;
 
     /**
      * contstructor that takes in game object and creates game instance, loads in assets, creates debug renderer, world contact listener, etc.
@@ -339,6 +340,7 @@ public class GameScreen implements Screen {
                 //System.out.println((float) Math.toDegrees((double) bodies.get(i).getAngle()));
                 i++;
             }
+            rows++;
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) {
             if (getCanoeAngle() <= 0f)
                 setCanoeAngle(330f);
@@ -353,6 +355,7 @@ public class GameScreen implements Screen {
                 debris.setRotation((float) Math.toDegrees(bodies.get(i).getAngle()));
                 i++;
             }
+            rows++;
         } else {
             i = 0;
             for (Sprite debris : spaceDebris) {
@@ -411,7 +414,7 @@ public class GameScreen implements Screen {
 
         //check to see if a collision with the canoe has been detected to generate the game over screen
         if (gameOver){
-            game.setScreen(new GameOverScreen(game));
+            game.setScreen(new GameOverScreen(game, debrisDodged, rows));
             dispose();
         }
     }

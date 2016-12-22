@@ -76,7 +76,7 @@ public class MainMenuScreen implements Screen {
         game.batch.begin();
         game.batch.draw(backgroundSpaceImage, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         elapsedTime += Gdx.graphics.getDeltaTime();
-        gameFont.draw(game.batch, item, Gdx.graphics.getWidth()/2 - enterWidth/2, Gdx.graphics.getHeight()/4);
+        gameFont.draw(game.batch, item, Gdx.graphics.getWidth()/2 - enterWidth/2, Gdx.graphics.getHeight()/4.5f);
         game.batch.draw(titleAnimation.getKeyFrame(elapsedTime, true), Gdx.graphics.getHeight()/2.75f, Gdx.graphics.getHeight()/3);
         game.batch.draw(rightPaddle, rightPaddle.getX(), rightPaddle.getY(), rightPaddle.getOriginX(), rightPaddle.getOriginY(), rightPaddle.getWidth(), rightPaddle.getHeight(), rightPaddle.getScaleX(), rightPaddle.getScaleY(), rightPaddle.getRotation());
         game.batch.draw(leftPaddle, leftPaddle.getX(), leftPaddle.getY(), leftPaddle.getOriginX(), leftPaddle.getOriginY(), leftPaddle.getWidth(), leftPaddle.getHeight(), leftPaddle.getScaleX(), leftPaddle.getScaleY(), leftPaddle.getRotation());
@@ -110,6 +110,10 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void dispose(){
+        gameFont.dispose();
+        rightPaddleImage.dispose();
+        leftPaddleImage.dispose();
+        backgroundSpaceImage.dispose();
         textureAtlas.dispose();
     }
 
