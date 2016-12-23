@@ -3,6 +3,8 @@ package io.github.bthomas2622;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -28,6 +30,8 @@ public class GameOverScreen implements Screen {
     int timesRowed;
     float gameOverWidth;
     float scoreWidth;
+    Music gameOverMusic;
+    Sound collisionSound;
 
     public GameOverScreen(final SpaceCanoe gam, int dodged, int rows) {
         game = gam;
@@ -37,6 +41,12 @@ public class GameOverScreen implements Screen {
         backgroundSpaceImage = new Texture(Gdx.files.internal("spaceBackground1920.png"));
         debrisDodged = dodged;
         timesRowed = rows;
+        gameOverMusic = Gdx.audio.newMusic(Gdx.files.internal("gameOver.mp3"));
+        gameOverMusic.setLooping(true);
+        gameOverMusic.setVolume(0.65f);
+        collisionSound = Gdx.audio.newSound(Gdx.files.internal("explosion.mp3"));
+        collisionSound.play();
+        gameOverMusic.play();
     }
 
     @Override
@@ -102,6 +112,8 @@ public class GameOverScreen implements Screen {
         backgroundSpaceImage.dispose();
         endFont.dispose();
         scoreFont.dispose();
+        gameOverMusic.dispose();
+        collisionSound.dispose();
     }
 
 }

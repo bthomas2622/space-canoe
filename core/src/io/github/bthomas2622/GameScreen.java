@@ -54,7 +54,6 @@ public class GameScreen implements Screen {
     Texture orangePlanetImage;
     Texture paddleImage;
     Sound paddleSound;
-    Sound collisionSound;
     Box2DDebugRenderer debugRenderer;
     Matrix4 debugMatrix;
     Music backgroundMusic;
@@ -90,6 +89,8 @@ public class GameScreen implements Screen {
     double doubleCanoeAngleInRadians;
     int rows = 0;
     double degreesDouble;
+    float debrisVelocity = 200000f;
+    float impulseForce = 100000f;
 
     /**
      * contstructor that takes in game object and creates game instance, loads in assets, creates debug renderer, world contact listener, etc.
@@ -108,10 +109,10 @@ public class GameScreen implements Screen {
         paddleImage = new Texture(Gdx.files.internal("paddle25.png"));
 
         // load the drop sound effect and the rain background "music"
-//        paddleSound = Gdx.audio.newSound(Gdx.files.internal("TBD"));
-//        collisionSound = Gdx.audio.newSound(Gdx.files.internal("TBD"));
-//        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("TBD"));
-//        backgroundMusic.setLooping(true);
+        paddleSound = Gdx.audio.newSound(Gdx.files.internal("paddle.mp3"));
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("gameBackground.mp3"));
+        backgroundMusic.setLooping(true);
+        backgroundMusic.play();
 
         //debug renderer allows us to see physics simulation controlling the scen
         //debugRenderer = new Box2DDebugRenderer();
@@ -267,13 +268,13 @@ public class GameScreen implements Screen {
 
         //initalize velocity to send towards at canoe
         if (getCanoeAngle() <= 45f || getCanoeAngle() >= 315f){
-            debrisBody.setLinearVelocity(-100f, 0);
+            debrisBody.setLinearVelocity(-debrisVelocity, 0);
         } else if (getCanoeAngle() > 45f && getCanoeAngle() <= 135f){
-            debrisBody.setLinearVelocity(0, -100f);
+            debrisBody.setLinearVelocity(0, -debrisVelocity);
         } else if (getCanoeAngle() > 135f && getCanoeAngle() <= 225f){
-            debrisBody.setLinearVelocity(100f, 0);
+            debrisBody.setLinearVelocity(debrisVelocity, 0);
         } else {
-            debrisBody.setLinearVelocity(0, 100f);
+            debrisBody.setLinearVelocity(0, debrisVelocity);
         }
 
         debrisBody.setUserData("debris");
@@ -325,8 +326,8 @@ public class GameScreen implements Screen {
         //canoe.setPosition(canoeBody.getPosition().x, canoeBody.getPosition().y);
 
         //the impulseForce represents the instant force on the space debris objects as a result of a canoe paddle
-        float impulseForce = 100000f;
         if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) {
+            paddleSound.play(0.02f);
             //canoe.setRotation((float)Math.toDegrees(30));
             if (getCanoeAngle() >= 330f)
                 setCanoeAngle(0f);
@@ -344,6 +345,7 @@ public class GameScreen implements Screen {
             }
             rows++;
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) {
+            paddleSound.play(0.02f);
             if (getCanoeAngle() <= 0f)
                 setCanoeAngle(330f);
             else
@@ -361,7 +363,7 @@ public class GameScreen implements Screen {
         } else {
             i = 0;
             for (Sprite debris : spaceDebris) {
-                bodies.get(i).applyForceToCenter((bodies.get(i).getLinearVelocity()).x * 25f, bodies.get(i).getLinearVelocity().y * 25f, true);
+                //bodies.get(i).applyForceToCenter((bodies.get(i).getLinearVelocity()).x * 25f, bodies.get(i).getLinearVelocity().y * 25f, true);
                 //debris.setPosition(bodies.get(i).getPosition().x + debris.getWidth(), bodies.get(i).getPosition().y);
                 debris.setPosition(bodies.get(i).getPosition().x - debris.getWidth()/2,  bodies.get(i).getPosition().y - debris.getHeight()/2);
                 debris.setRotation((float) Math.toDegrees(bodies.get(i).getAngle()));
@@ -377,6 +379,7 @@ public class GameScreen implements Screen {
                 i++;
             }
         }
+
         drawPaddle = false;
         doubleCanoeAngleInRadians = Math.toRadians((double) getCanoeAngle());
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
@@ -460,9 +463,8 @@ public class GameScreen implements Screen {
         orangePlanetImage.dispose();
         paddleImage.dispose();
         world.dispose();
-//        collisionSound.dispose();
-//        paddleSound.dispose();
-//        backgroundMusic.dispose();
+        paddleSound.dispose();
+        backgroundMusic.dispose();
         //debugRenderer.dispose();
         generator.dispose();
     }

@@ -3,6 +3,8 @@ package io.github.bthomas2622;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -30,6 +32,7 @@ public class MainMenuScreen implements Screen {
     Texture backgroundSpaceImage;
     Sprite rightPaddle;
     Sprite leftPaddle;
+    Music introMusic;
 
 
     public MainMenuScreen(final SpaceCanoe gam){
@@ -50,6 +53,10 @@ public class MainMenuScreen implements Screen {
         leftPaddle.setOriginCenter();
         leftPaddle.setRotation(0f);
         backgroundSpaceImage = new Texture(Gdx.files.internal("spaceBackground1920.png"));
+        introMusic = Gdx.audio.newMusic(Gdx.files.internal("intro.mp3"));
+        introMusic.setLooping(true);
+        introMusic.setVolume(0.75f);
+        introMusic.play();
     }
 
     @Override
@@ -114,6 +121,7 @@ public class MainMenuScreen implements Screen {
         leftPaddleImage.dispose();
         backgroundSpaceImage.dispose();
         textureAtlas.dispose();
+        introMusic.dispose();
     }
 
 }
