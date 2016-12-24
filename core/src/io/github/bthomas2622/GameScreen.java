@@ -89,8 +89,9 @@ public class GameScreen implements Screen {
     double doubleCanoeAngleInRadians;
     int rows = 0;
     double degreesDouble;
-    float debrisVelocity = 200000f;
-    float impulseForce = 100000f;
+    float debrisVelocity = 1f;
+    float impulseForce = 1f;
+    final float PIXELS_TO_METERS = 100f;
 
     /**
      * contstructor that takes in game object and creates game instance, loads in assets, creates debug renderer, world contact listener, etc.
@@ -147,7 +148,7 @@ public class GameScreen implements Screen {
         BodyDef debrisBodyDef = new BodyDef();
         canoeBodyDef.type = BodyDef.BodyType.DynamicBody;
         debrisBodyDef.type = BodyDef.BodyType.DynamicBody;
-        canoeBodyDef.position.set(canoe.getX() + canoe.getWidth() / 2, canoe.getY() + canoe.getHeight() / 2);
+        canoeBodyDef.position.set((canoe.getX() + canoe.getWidth() / 2)/PIXELS_TO_METERS, (canoe.getY() + canoe.getHeight() / 2)/PIXELS_TO_METERS);
         //create body in world using our definition
         canoeBody = world.createBody(canoeBodyDef);
         //define dimensions of the canoe physics shape
@@ -155,14 +156,14 @@ public class GameScreen implements Screen {
         //canoeShape.setAsBox(canoe.getWidth()/2, canoe.getHeight()/2);
         //float array of indices that make up shape of canoe for hit detection, it is a diamond, coordinates or with origin at center of canoe
         canoePolygon = new float[8];
-        canoePolygon[0] = -112f;
+        canoePolygon[0] = -112f / PIXELS_TO_METERS;
         canoePolygon[1] = 0f;
         canoePolygon[2] = 0f;
-        canoePolygon[3] = 26f;
-        canoePolygon[4] = 112f;
-        canoePolygon[5] = 0f;
-        canoePolygon[6] = 0f;
-        canoePolygon[7] = -26f;
+        canoePolygon[3] = 26f / PIXELS_TO_METERS;
+        canoePolygon[4] = 112f / PIXELS_TO_METERS;
+        canoePolygon[5] = 0f / PIXELS_TO_METERS;
+        canoePolygon[6] = 0f / PIXELS_TO_METERS;
+        canoePolygon[7] = -26f / PIXELS_TO_METERS;
         canoeShape.set(canoePolygon);
         //FixtureDef defines shape of body and properties like density
         FixtureDef canoeFixtureDef = new FixtureDef();
@@ -223,7 +224,7 @@ public class GameScreen implements Screen {
         debrisDiceRoller = MathUtils.random(10f);
         Sprite debris;
         if (debrisDiceRoller <= 6f){
-            debris = new Sprite(spaceDebrisImage);
+            debris = new Sprite(spaceDebrisImageLarge);
         }
         else if (debrisDiceRoller <= 9){
             debris = new Sprite(spaceDebrisImageLarge);
@@ -237,7 +238,7 @@ public class GameScreen implements Screen {
         } else if (getCanoeAngle() > 45f && getCanoeAngle() <= 135f){
             debris.setPosition(Gdx.graphics.getWidth()*MathUtils.random(), Gdx.graphics.getHeight() + debris.getHeight()/2);
         } else if (getCanoeAngle() > 135f && getCanoeAngle() <= 225f){
-            debris.setPosition(0 - debris.getWidth()/2, Gdx.graphics.getHeight()*MathUtils.random());
+            debris.setPosition(0 - debris.getWidth()/2,Gdx.graphics.getHeight()*MathUtils.random());
         } else {
             debris.setPosition(Gdx.graphics.getWidth()*MathUtils.random(), 0 - debris.getHeight()/2);
         }
@@ -249,13 +250,13 @@ public class GameScreen implements Screen {
         debris.setOriginCenter();
         BodyDef debrisBodyDef = new BodyDef();
         debrisBodyDef.type = BodyDef.BodyType.DynamicBody;
-        debrisBodyDef.position.set(debris.getX() + debris.getWidth()/2,debris.getY()+debris.getHeight()/2);
+        debrisBodyDef.position.set((debris.getX() + debris.getWidth()/2)/PIXELS_TO_METERS,(debris.getY()+debris.getHeight()/2)/PIXELS_TO_METERS);
         //create body in world using our definition
         debrisBody = world.createBody(debrisBodyDef);
         //define dimensions of the canoe physics shape
         //PolygonShape debrisShape = new PolygonShape();
         CircleShape debrisShape = new CircleShape();
-        debrisShape.setRadius(debris.getWidth()/2);
+        debrisShape.setRadius(debris.getWidth()/2 / PIXELS_TO_METERS);
         //debrisShape.setAsBox(debris.getWidth()/2, debris.getHeight()/2);
         //FixtureDef defines shape of body and properties like density
         FixtureDef debrisFixtureDef = new FixtureDef();
@@ -267,14 +268,23 @@ public class GameScreen implements Screen {
         //Fixture debrisFixture = canoeBody.createFixture(debrisFixtureDef);
 
         //initalize velocity to send towards at canoe
+//        if (getCanoeAngle() <= 45f || getCanoeAngle() >= 315f){
+//            debrisBody.setLinearVelocity(-debrisVelocity, 0);
+//        } else if (getCanoeAngle() > 45f && getCanoeAngle() <= 135f){
+//            debrisBody.setLinearVelocity(0, -debrisVelocity);
+//        } else if (getCanoeAngle() > 135f && getCanoeAngle() <= 225f){
+//            debrisBody.setLinearVelocity(debrisVelocity, 0);
+//        } else {
+//            debrisBody.setLinearVelocity(0, debrisVelocity);
+//        }
         if (getCanoeAngle() <= 45f || getCanoeAngle() >= 315f){
-            debrisBody.setLinearVelocity(-debrisVelocity, 0);
+            debrisBody.applyLinearImpulse(-debrisVelocity, 0, debris.getX(), debris.getY(), true);
         } else if (getCanoeAngle() > 45f && getCanoeAngle() <= 135f){
-            debrisBody.setLinearVelocity(0, -debrisVelocity);
+            debrisBody.applyLinearImpulse(0, -debrisVelocity, debris.getX(), debris.getY(), true);
         } else if (getCanoeAngle() > 135f && getCanoeAngle() <= 225f){
-            debrisBody.setLinearVelocity(debrisVelocity, 0);
+            debrisBody.applyLinearImpulse(debrisVelocity, 0, debris.getX(), debris.getY(), true);
         } else {
-            debrisBody.setLinearVelocity(0, debrisVelocity);
+            debrisBody.applyLinearImpulse(0, debrisVelocity, debris.getX(), debris.getY(), true);
         }
 
         debrisBody.setUserData("debris");
@@ -321,7 +331,7 @@ public class GameScreen implements Screen {
 
         // tell the camera to update its matrices.
         camera.update();
-        //step physics forward at rate of 60hx
+        //step physics forward at refresh rate of 60hz
         world.step(1f/60f, 6, 2);
         //canoe.setPosition(canoeBody.getPosition().x, canoeBody.getPosition().y);
 
@@ -338,7 +348,7 @@ public class GameScreen implements Screen {
             for (Sprite debris : spaceDebris) {
                 bodies.get(i).applyLinearImpulse(-impulseForce*(float)Math.cos(doubleCanoeAngleInRadians), -impulseForce*(float)Math.sin(doubleCanoeAngleInRadians), canoe.getOriginX(), canoe.getOriginY(), true);
                 //debris.setPosition(bodies.get(i).getPosition().x + debris.getWidth(), bodies.get(i).getPosition().y);
-                debris.setPosition(bodies.get(i).getPosition().x - debris.getWidth()/2,  bodies.get(i).getPosition().y - debris.getHeight()/2);
+                debris.setPosition((bodies.get(i).getPosition().x*PIXELS_TO_METERS - debris.getWidth()/2),  (bodies.get(i).getPosition().y*PIXELS_TO_METERS - debris.getHeight()/2));
                 debris.setRotation((float) Math.toDegrees((double) bodies.get(i).getAngle()));
                 //System.out.println((float) Math.toDegrees((double) bodies.get(i).getAngle()));
                 i++;
@@ -355,7 +365,7 @@ public class GameScreen implements Screen {
             for (Sprite debris : spaceDebris) {
                 bodies.get(i).applyLinearImpulse(-impulseForce*(float)Math.cos(doubleCanoeAngleInRadians), -impulseForce*(float)Math.sin(doubleCanoeAngleInRadians), canoe.getOriginX(), canoe.getOriginY(), true);
                 //debris.setPosition(bodies.get(i).getPosition().x + debris.getWidth(), bodies.get(i).getPosition().y);
-                debris.setPosition(bodies.get(i).getPosition().x - debris.getWidth()/2,  bodies.get(i).getPosition().y - debris.getHeight()/2);
+                debris.setPosition((bodies.get(i).getPosition().x*PIXELS_TO_METERS - debris.getWidth()/2),  (bodies.get(i).getPosition().y*PIXELS_TO_METERS - debris.getHeight()/2));
                 debris.setRotation((float) Math.toDegrees(bodies.get(i).getAngle()));
                 i++;
             }
@@ -365,7 +375,7 @@ public class GameScreen implements Screen {
             for (Sprite debris : spaceDebris) {
                 //bodies.get(i).applyForceToCenter((bodies.get(i).getLinearVelocity()).x * 25f, bodies.get(i).getLinearVelocity().y * 25f, true);
                 //debris.setPosition(bodies.get(i).getPosition().x + debris.getWidth(), bodies.get(i).getPosition().y);
-                debris.setPosition(bodies.get(i).getPosition().x - debris.getWidth()/2,  bodies.get(i).getPosition().y - debris.getHeight()/2);
+                debris.setPosition((bodies.get(i).getPosition().x*PIXELS_TO_METERS - debris.getWidth()/2),  (bodies.get(i).getPosition().y*PIXELS_TO_METERS - debris.getHeight()/2));
                 debris.setRotation((float) Math.toDegrees(bodies.get(i).getAngle()));
                 //remove avoided space debris
                 if (bodies.get(i).getPosition().x < - debris.getWidth() || bodies.get(i).getPosition().x > Gdx.graphics.getWidth() + debris.getWidth() || bodies.get(i).getPosition().y < -debris.getHeight() || bodies.get(i).getPosition().y > Gdx.graphics.getHeight() + debris.getHeight()){
@@ -393,7 +403,7 @@ public class GameScreen implements Screen {
         // tell the SpriteBatch to render in the
         // coordinate system specified by the camera.
         game.batch.setProjectionMatrix(camera.combined);
-        //debugMatrix = game.batch.getProjectionMatrix().cpy();
+        //debugMatrix = game.batch.getProjectionMatrix().cpy().scale(PIXELS_TO_METERS,PIXELS_TO_METERS, 0);
 
         // begin a new batch and draw the canoe and all debris
         game.batch.begin();
@@ -429,7 +439,7 @@ public class GameScreen implements Screen {
         camera.setToOrtho(false, width, height);
         //re-eastablish canoe parameters with new screen size
         canoe.setPosition(Gdx.graphics.getWidth()/2 - canoe.getWidth() / 2, Gdx.graphics.getHeight() / 2 - canoe.getHeight() / 2);
-        canoeBody.setTransform(canoe.getX() + canoe.getWidth() / 2, canoe.getY() + canoe.getHeight() / 2, (float) Math.toRadians(degreesDouble));
+        canoeBody.setTransform((canoe.getX() + canoe.getWidth() / 2) / PIXELS_TO_METERS, (canoe.getY() + canoe.getHeight() / 2) / PIXELS_TO_METERS, (float) Math.toRadians(degreesDouble));
         camera.update();
     }
 
