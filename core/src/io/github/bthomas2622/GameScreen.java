@@ -65,6 +65,7 @@ public class GameScreen implements Screen {
     Array<Sprite> spaceDebris;
     ArrayList spaceDebrisList = new ArrayList();
     long lastDebrisTime;
+    long nextDebrisTime = 500000000;
     int debrisDodged = 0;
     World world;
     Body canoeBody;
@@ -89,7 +90,7 @@ public class GameScreen implements Screen {
     double doubleCanoeAngleInRadians;
     int rows = 0;
     double degreesDouble;
-    float debrisVelocity = 1f;
+    float debrisVelocity = 2f;
     float impulseForce = 1f;
     final float PIXELS_TO_METERS = 100f;
 
@@ -425,7 +426,7 @@ public class GameScreen implements Screen {
         //render the debug matrix
         //debugRenderer.render(world, debugMatrix);
         //check if we need to create a new space debris object based on time in nanoseconds
-        if (TimeUtils.nanoTime() - lastDebrisTime > 1000000000)
+        if (TimeUtils.nanoTime() - lastDebrisTime > nextDebrisTime)
             spawnDebris();
 
         //check to see if a collision with the canoe has been detected to generate the game over screen
