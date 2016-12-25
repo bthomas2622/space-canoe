@@ -378,7 +378,8 @@ public class GameScreen implements Screen {
                 debris.setPosition((bodies.get(i).getPosition().x*PIXELS_TO_METERS - debris.getWidth()/2),  (bodies.get(i).getPosition().y*PIXELS_TO_METERS - debris.getHeight()/2));
                 debris.setRotation((float) Math.toDegrees(bodies.get(i).getAngle()));
                 //remove avoided space debris
-                if (bodies.get(i).getPosition().x < - debris.getWidth() || bodies.get(i).getPosition().x > Gdx.graphics.getWidth() + debris.getWidth() || bodies.get(i).getPosition().y < -debris.getHeight() || bodies.get(i).getPosition().y > Gdx.graphics.getHeight() + debris.getHeight()){
+                //System.out.println(bodies.get(i).getPosition().x);
+                if (bodies.get(i).getPosition().x*PIXELS_TO_METERS < - debris.getWidth() || bodies.get(i).getPosition().x*PIXELS_TO_METERS > Gdx.graphics.getWidth() + debris.getWidth() || bodies.get(i).getPosition().y*PIXELS_TO_METERS < -debris.getHeight() || bodies.get(i).getPosition().y*PIXELS_TO_METERS > Gdx.graphics.getHeight() + debris.getHeight()){
                     spaceDebris.removeIndex(i); //destroys sprite associated with dodged debris
                     debrisBodyFixture = bodies.get(i).getFixtureList();
                     bodies.get(i).destroyFixture(debrisBodyFixture.first()); //destroys body fixture associated with dodged debris
