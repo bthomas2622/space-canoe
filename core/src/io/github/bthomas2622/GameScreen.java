@@ -50,6 +50,7 @@ public class GameScreen implements Screen {
     Texture spaceDebrisImage;
     Texture spaceDebrisImageLarge;
     Texture spaceDebrisImageLargest;
+    Texture spaceDebrisImageLargerThanLargest;
     Texture backgroundSpaceImage;
     Texture purplePlanetImage;
     Texture orangePlanetImage;
@@ -91,8 +92,8 @@ public class GameScreen implements Screen {
     double doubleCanoeAngleInRadians;
     int rows = 0;
     double degreesDouble;
-    float debrisVelocity = 2f;
-    float impulseForce = 1f;
+    float debrisVelocity = 1f;
+    float impulseForce = .6f;
     final float PIXELS_TO_METERS = 100f;
 
     /**
@@ -106,6 +107,7 @@ public class GameScreen implements Screen {
         spaceDebrisImage = new Texture(Gdx.files.internal("spaceDebris.png"));
         spaceDebrisImageLarge = new Texture(Gdx.files.internal("spaceDebris100.png"));
         spaceDebrisImageLargest = new Texture(Gdx.files.internal("spaceDebris150.png"));
+        spaceDebrisImageLargerThanLargest = new Texture(Gdx.files.internal("spaceDebris250.png"));
         backgroundSpaceImage = new Texture(Gdx.files.internal("spaceBackground1920.png"));
         purplePlanetImage = new Texture(Gdx.files.internal("purplePlanet.png"));
         orangePlanetImage = new Texture(Gdx.files.internal("orangePlanet.png"));
@@ -224,16 +226,28 @@ public class GameScreen implements Screen {
      */
     private void spawnDebris() {
         debrisDiceRoller = MathUtils.random(10f);
+        System.out.println(String.valueOf(debrisDiceRoller));
         Sprite debris;
-        if (debrisDiceRoller <= 6f){
-            debris = new Sprite(spaceDebrisImageLarge);
-        }
-        else if (debrisDiceRoller <= 9){
-            debris = new Sprite(spaceDebrisImageLarge);
+        if (debrisDodged > 50){
+            if (debrisDiceRoller <= 7f){
+                debris = new Sprite(spaceDebrisImageLarge);
+            }
+            else if (debrisDiceRoller <= 9.5f){
+                debris = new Sprite(spaceDebrisImageLargest);
+            }
+            else {
+                debris = new Sprite(spaceDebrisImageLargerThanLargest);
+            }
         }
         else {
-            debris = new Sprite(spaceDebrisImageLargest);
+            if (debrisDiceRoller <= 8f){
+                debris = new Sprite(spaceDebrisImageLarge);
+            }
+            else {
+                debris = new Sprite(spaceDebrisImageLargest);
+            }
         }
+
         //place the canoe just outside the screen wherever the canoe is facing
         if (getCanoeAngle() <= 45f || getCanoeAngle() >= 315f){
             debris.setPosition(Gdx.graphics.getWidth() + debris.getWidth() / 2, MathUtils.random()*Gdx.graphics.getHeight());
@@ -269,16 +283,6 @@ public class GameScreen implements Screen {
         debrisBody.createFixture(debrisFixtureDef);
         //Fixture debrisFixture = canoeBody.createFixture(debrisFixtureDef);
 
-        //initalize velocity to send towards at canoe
-//        if (getCanoeAngle() <= 45f || getCanoeAngle() >= 315f){
-//            debrisBody.setLinearVelocity(-debrisVelocity, 0);
-//        } else if (getCanoeAngle() > 45f && getCanoeAngle() <= 135f){
-//            debrisBody.setLinearVelocity(0, -debrisVelocity);
-//        } else if (getCanoeAngle() > 135f && getCanoeAngle() <= 225f){
-//            debrisBody.setLinearVelocity(debrisVelocity, 0);
-//        } else {
-//            debrisBody.setLinearVelocity(0, debrisVelocity);
-//        }
         if (getCanoeAngle() <= 45f || getCanoeAngle() >= 315f){
             debrisBody.applyLinearImpulse(-debrisVelocity, 0, debris.getX(), debris.getY(), true);
         } else if (getCanoeAngle() > 45f && getCanoeAngle() <= 135f){
@@ -426,9 +430,15 @@ public class GameScreen implements Screen {
 
         //render the debug matrix
         //debugRenderer.render(world, debugMatrix);
+
+        //increase difficulty
+        if (nextDebrisTime > 100000000)
+            nextDebrisTime -= 10000;
+
         //check if we need to create a new space debris object based on time in nanoseconds
-        if (TimeUtils.nanoTime() - lastDebrisTime > nextDebrisTime)
+        if (TimeUtils.nanoTime() - lastDebrisTime > nextDebrisTime){
             spawnDebris();
+        }
 
         //check to see if a collision with the canoe has been detected to generate the game over screen
         if (gameOver){
