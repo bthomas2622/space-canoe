@@ -2,6 +2,7 @@ package io.github.bthomas2622;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -24,14 +25,20 @@ public class GameOverScreen implements Screen {
     Texture backgroundSpaceImage;
     BitmapFont endFont;
     BitmapFont scoreFont;
+    BitmapFont highScoreFont;
+    BitmapFont enterFont;
     String gameOver;
     String score;
+    String highScoreString;
+    String enterString = "PRESS 'ENTER' TO PLAY AGAIN";
     int debrisDodged;
+    int highScore;
     int timesRowed;
     float gameOverWidth;
     float scoreWidth;
     Music gameOverMusic;
     Sound collisionSound;
+    Preferences prefs = Gdx.app.getPreferences("My Preferences");
 
     public GameOverScreen(final SpaceCanoe gam, int dodged, int rows) {
         game = gam;
@@ -40,6 +47,19 @@ public class GameOverScreen implements Screen {
         camera.setToOrtho(false, 1920, 1080);
         backgroundSpaceImage = new Texture(Gdx.files.internal("spaceBackground1920.png"));
         debrisDodged = dodged;
+        try{
+            if (prefs.getInteger("io.github.bthomas2622.highscore") > debrisDodged){
+                highScore = prefs.getInteger("io.github.bthomas2622.highscore");
+            }
+            else {
+                highScore = debrisDodged;
+                prefs.putInteger("io.github.bthomas2622.highscore", highScore);
+            }
+        }
+        catch (Exception err){
+            highScore = debrisDodged;
+            prefs.putInteger("io.github.bthomas2622.highscore", highScore);
+        }
         timesRowed = rows;
         gameOverMusic = Gdx.audio.newMusic(Gdx.files.internal("gameOver.mp3"));
         gameOverMusic.setLooping(true);
@@ -62,6 +82,7 @@ public class GameOverScreen implements Screen {
         gameOver = "GAME OVER";
         endGlyphLayout.setText(endFont,gameOver);
         gameOverWidth = endGlyphLayout.width;
+        //Score font
         FreeTypeFontGenerator.FreeTypeFontParameter scoreParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         scoreParameter.size = 40;
         scoreParameter.color = Color.RED;
@@ -70,16 +91,32 @@ public class GameOverScreen implements Screen {
         score = "Score: " + String.valueOf(debrisDodged) + "\n" + "Paddles: " + String.valueOf(timesRowed);
         scoreGlyphLayout.setText(scoreFont, score);
         scoreWidth = scoreGlyphLayout.width;
+        //High Score font
+        FreeTypeFontGenerator.FreeTypeFontParameter highScoreParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        highScoreParameter.size = 40;
+        highScoreParameter.color = Color.GREEN;
+        highScoreFont = generator.generateFont(highScoreParameter);
+        highScoreString = "HIGH SCORE: " + String.valueOf(highScore);
+        //press enter to play again text
+        FreeTypeFontGenerator.FreeTypeFontParameter enterParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        enterParameter.size = 30;
+        enterFont = generator.generateFont(enterParameter);
+        //generating a glyph layout to get the length of the string so i can center it
+        GlyphLayout enterLayout = new GlyphLayout();
+        enterLayout.setText(enterFont,enterString);
+        float enterWidth = enterLayout.width;
         generator.dispose(); //dispose generator to avoid memory leaks
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
         game.batch.draw(backgroundSpaceImage, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         endFont.draw(game.batch, gameOver, Gdx.graphics.getWidth()/2 - gameOverWidth/2, Gdx.graphics.getHeight()/1.25f);
-        scoreFont.draw(game.batch, score, Gdx.graphics.getWidth()/2 - scoreWidth/2, Gdx.graphics.getHeight()/2);
+        scoreFont.draw(game.batch, score, Gdx.graphics.getWidth()/2 - scoreWidth/2, Gdx.graphics.getHeight()/1.5f);
+        highScoreFont.draw(game.batch, highScoreString, Gdx.graphics.getWidth()/7, Gdx.graphics.getHeight()/7);
+        enterFont.draw(game.batch, enterString, Gdx.graphics.getWidth()/2 - enterWidth/2, Gdx.graphics.getHeight()/3);
         game.batch.end();
 
-        if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
             game.setScreen(new GameScreen(game));
             dispose();
         }
