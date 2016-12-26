@@ -65,7 +65,6 @@ public class GameScreen implements Screen {
     Sprite purplePlanet;
     Sprite orangePlanet;
     Array<Sprite> spaceDebris;
-    ArrayList spaceDebrisList = new ArrayList();
     long lastDebrisTime;
     long nextDebrisTime = 500000000;
     int debrisDodged = 0;
@@ -226,7 +225,7 @@ public class GameScreen implements Screen {
      */
     private void spawnDebris() {
         debrisDiceRoller = MathUtils.random(10f);
-        System.out.println(String.valueOf(debrisDiceRoller));
+        //System.out.println(String.valueOf(debrisDiceRoller));
         Sprite debris;
         if (debrisDodged > 50){
             if (debrisDiceRoller <= 7f){
