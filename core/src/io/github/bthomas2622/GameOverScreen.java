@@ -37,7 +37,7 @@ public class GameOverScreen implements Screen {
     float scoreWidth;
     Music gameOverMusic;
     Sound collisionSound;
-    Preferences prefs = Gdx.app.getPreferences("My Preferences");
+    Preferences prefs = Gdx.app.getPreferences("io.github.bthomas2622.highscore");
 
     public GameOverScreen(final SpaceCanoe gam, int dodged, int rows) {
         game = gam;
@@ -53,11 +53,13 @@ public class GameOverScreen implements Screen {
             else {
                 highScore = debrisDodged;
                 prefs.putInteger("io.github.bthomas2622.highscore", highScore);
+                prefs.flush();
             }
         }
         catch (Exception err){
             highScore = debrisDodged;
             prefs.putInteger("io.github.bthomas2622.highscore", highScore);
+            prefs.flush();
         }
         timesRowed = rows;
         gameOverMusic = Gdx.audio.newMusic(Gdx.files.internal("gameOver.mp3"));
