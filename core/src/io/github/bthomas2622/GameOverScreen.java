@@ -66,7 +66,7 @@ public class GameOverScreen implements Screen {
         gameOverMusic.setLooping(true);
         gameOverMusic.setVolume(0.65f);
         collisionSound = Gdx.audio.newSound(Gdx.files.internal("explosion.mp3"));
-        collisionSound.play();
+        collisionSound.play(.10f);
         gameOverMusic.play();
     }
 
