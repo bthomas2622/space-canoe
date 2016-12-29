@@ -10,12 +10,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class SpaceCanoe extends Game {
 	public SpriteBatch batch;
-	public BitmapFont font;
+	//public BitmapFont font;
 	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		font = new BitmapFont(); //temp till create new FreeTypeFontGenerator
+		//font = new BitmapFont(); //temp till create new FreeTypeFontGenerator
 		this.setScreen(new MainMenuScreen(this));
 	}
 
@@ -27,6 +27,6 @@ public class SpaceCanoe extends Game {
 	@Override
 	public void dispose () {
 		batch.dispose();
-		font.dispose();
+		//font.dispose();
 	}
 }
