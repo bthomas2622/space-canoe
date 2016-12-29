@@ -1,4 +1,5 @@
 # **SPACE CANOE** by Ben Thomas
+[Download Page](https://freebrunch.itch.io/space-canoe)
 
 ## **About**
 
@@ -11,7 +12,7 @@ The player uses the *left* and *right* arrow keys in the game screen to paddle t
 
 ### How to "Run"
 
-TBD
+Machine must have java installed. EXE run file available for windows. JAR run file available for Mac and Linux users. Hosted on [itch.io](https://freebrunch.itch.io/space-canoe).
 
 ## How it was programmed
 
