@@ -1,7 +1,4 @@
-# **SPACE CANOE**
-===============================
-
-Ben Thomas
+# **SPACE CANOE** by Ben Thomas
 
 ## **About**
 
@@ -18,13 +15,15 @@ TBD
 
 ## How it was programmed
 
-##### Tools
+#### Tools
 Space Canoe was programmed in Java through the **LibGDX** framework in the Android Studio IDE. The **Box2D** physics extension was utilized to create physics bodies the represent the canoe and space debris. This allows for realistic collisions and the ability to apply force to the space debris from a canoe paddle action. The **"freetype"** library within LibGDX was used to apply ttf font files from Google Fonts in the game. The **"TexturePacker"** tool within the "Tools" LibGDX extension was utilized to create spritesheets from images in order to create title animation. 
 
 **Adobe Photoshop** was used to draw the space background, canoe space debris. 
 
-##### Design
+#### Design
 I set out to make a trippy rhythmic arcade game about a canoe paddling through space. I chose to lock the canoe at the center of the screen and simulate the motion of the canoe through the forces applied to the space debris around the canoe. This is easier to code because very little information needs to be tracked that is not within the game camera. I set the canoe rotation per paddle at 30 degrees because it felt like a natural representation of the real mechanics of a canoe. When a canoe is paddled the change in direction is suttle not a total turn. 30 degrees is what I found to be the minimal turn made by the player without giving the sensation of little control over canoe in game. I originally wanted this game to be a rhythm game in the realm of "Crypt of the Necrodancer", meaning the game would only accept input if it was "on the beat". I quickly found during playtesting however that a great deal of the fun in Space Canoe came from frantically paddling in fast paced space chaos. I felt I needed to abandon the rhythm gameplay at this point to allow for more fast twitch paddling. 
+
+## Additional Information
 
 #### Directory Structure
 
