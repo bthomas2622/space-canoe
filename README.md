@@ -1,6 +1,6 @@
 # **SPACE CANOE** by Ben Thomas
-[Desktop Download Page](https://freebrunch.itch.io/space-canoe)
-[Google Play Listing](https://play.google.com/store/apps/details?id=io.github.bthomas2622)
+* [Desktop Download Page](https://freebrunch.itch.io/space-canoe)
+* [Google Play Listing](https://play.google.com/store/apps/details?id=io.github.bthomas2622)
 
 ## **About**
 
