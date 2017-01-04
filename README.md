@@ -1,5 +1,6 @@
 # **SPACE CANOE** by Ben Thomas
-[Download Page](https://freebrunch.itch.io/space-canoe)
+[Desktop Download Page](https://freebrunch.itch.io/space-canoe)
+[Google Play Listing](https://play.google.com/store/apps/details?id=io.github.bthomas2622)
 
 ## **About**
 
@@ -12,7 +13,9 @@ The player uses the *left* and *right* arrow keys in the game screen to paddle t
 
 ### How to "Run"
 
-Machine must have java installed. EXE run file available for windows. JAR run file available for Mac and Linux users. Hosted on [itch.io](https://freebrunch.itch.io/space-canoe).
+For Desktop machine must have java installed. EXE run file available for windows. JAR run file available for Mac and Linux users. Hosted on [itch.io](https://freebrunch.itch.io/space-canoe).
+
+For Android the game can be found on the [Google Play](https://play.google.com/store/apps/details?id=io.github.bthomas2622) app store and downloaded to your Android device.
 
 ## How it was programmed
 
