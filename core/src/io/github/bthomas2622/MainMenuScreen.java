@@ -3,6 +3,7 @@ package io.github.bthomas2622;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -31,6 +32,13 @@ public class MainMenuScreen implements Screen {
     Sprite rightPaddle;
     Sprite leftPaddle;
     Music introMusic;
+    AssetManager assetManager;
+    boolean loaded = false;
+    float enterWidth;
+    GlyphLayout glyphLayout;
+    String item;
+    FreeTypeFontGenerator generator;
+    FreeTypeFontGenerator.FreeTypeFontParameter parameter;
 
 
     public MainMenuScreen(final SpaceCanoe gam){
@@ -51,26 +59,44 @@ public class MainMenuScreen implements Screen {
         leftPaddle.setOriginCenter();
         leftPaddle.setRotation(0f);
         backgroundSpaceImage = new Texture(Gdx.files.internal("spaceBackground1920.png"));
-        introMusic = Gdx.audio.newMusic(Gdx.files.internal("intro.mp3"));
-        introMusic.setLooping(true);
-        introMusic.setVolume(0.75f);
-        introMusic.play();
+        assetManager = new AssetManager();
+        assetManager.load("intro.mp3", Music.class);
+        assetManager.finishLoading();
+
+        generator = new FreeTypeFontGenerator(Gdx.files.internal("SpaceMono-Bold.ttf"));
+        parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 30;
+        gameFont = generator.generateFont(parameter);
+        //generating a glyph layout to get the length of the string so i can center it
+        glyphLayout = new GlyphLayout();
+        item = "TOUCH ANYWHERE TO PLAY";
+        glyphLayout.setText(gameFont,item);
+        enterWidth = glyphLayout.width;
+        generator.dispose(); //dispose generator to avoid memory leaks
+    }
+
+    public boolean startMusic() {
+        if(assetManager.isLoaded("intro.mp3")) {
+            introMusic = assetManager.get("intro.mp3", Music.class);
+            introMusic.setLooping(true);
+            introMusic.setVolume(0.5f);
+            introMusic.play();
+            return true;
+        }else {
+            //System.out.println("not loaded yet");
+            return false;
+        }
     }
 
     @Override
     public void render(float delta){
+        //make sure music is loaded
+        if (loaded == false){
+            loaded = startMusic();
+        }
         Gdx.gl.glClearColor(0,0,0,0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("SpaceMono-Bold.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 30;
-        gameFont = generator.generateFont(parameter);
-        //generating a glyph layout to get the length of the string so i can center it
-        GlyphLayout glyphLayout = new GlyphLayout();
-        String item = "PRESS 'ENTER' TO PLAY";
-        glyphLayout.setText(gameFont,item);
-        float enterWidth = glyphLayout.width;
-        generator.dispose(); //dispose generator to avoid memory leaks
+        //enterWidth = glyphLayout.width;
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
